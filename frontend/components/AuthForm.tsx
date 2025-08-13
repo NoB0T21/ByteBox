@@ -1,18 +1,19 @@
 'use client';
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { PulseLoader } from "react-spinners";
 import {api} from "../utils/api"
 import { GoogleOAuthProvider } from "@react-oauth/google"
+import { useRouter } from "next/navigation";
+import { convertFileToUrl } from "@/utils/utils";
+import { motion } from "motion/react";
 import Link from "next/link";
 import Toasts from "./toasts/Toasts";
 import GoogleForm from "./GoogleForm";
 import Cookies from "js-cookie";
-import { useRouter } from "next/navigation";
-import { MAX_FILE_SIZE } from '@/utils'
-import { convertFileToUrl } from "@/utils/utils";
 import Image from "next/image";
+import { Hide, Show } from "./icon/Icons";
 
 
 type FormType = 'sign-in' | 'sign-up'
@@ -40,7 +41,6 @@ const AuthForm = ({type}: {type: FormType}) => {
         picture?: string;
         password?: string;
         confirm?: string;
-        file?: File
     }>({})
     const [error, setError] = useState<{
         name?: string;
@@ -58,7 +58,6 @@ const AuthForm = ({type}: {type: FormType}) => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        setFormData({...formData, file: file})
         setShowToast(false)
         setLoading(true)
         let parserResult: any
@@ -108,8 +107,8 @@ const AuthForm = ({type}: {type: FormType}) => {
             form.append('email', formData.email || '');
             form.append('password', formData.password || '');
             form.append('confirm', formData.confirm || '');
-            if (formData.file) {
-            form.append('file', formData.file);
+            if (file) {
+                form.append('file', file);
             }
         const response = await api.post(type === 'sign-in'? '/user/signin':'/user/signup',type === 'sign-in'? formData:form,{withCredentials: true})
         if(response.status !== 201){
@@ -132,9 +131,8 @@ const AuthForm = ({type}: {type: FormType}) => {
             picture: raw.picture
             };
                 
-            Cookies.set('user', JSON.stringify(user), { expires: 1 });
+            Cookies.set('user', user._id, { expires: 1 });
             localStorage.setItem('user', JSON.stringify(user));
-            localStorage.setItem('token',token)
             Cookies.set("token", token, {
                 expires: 1, // days
                 sameSite: "strict",
@@ -146,10 +144,10 @@ const AuthForm = ({type}: {type: FormType}) => {
 
   return (
     <>
-        <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 p-1 rounded-md w-full md:w-2/3 lg:w-full">
+        <form onSubmit={handleSubmit} className="flex flex-col items-center gap-4 p-1 rounded-md w-full md:w-2/3 lg:w-full max-w-[450px] md:max-w-[350px]">
             {type === 'sign-up' && (
                 <>
-                    <div className="relative w-2/3 lg:w-1/2">
+                    <div className="relative w-full">
                         {error.name && <p className="mb-1 text-red-500 text-xs">{error.name}</p>}
                         <input name='name' type="text" value={formData.name} onChange={(e) => {setFormData({...formData, name: e.target.value})}}required 
                             className="peer bg-zinc-800 p-2 border border-zinc-700 focus:border-indigo-500 rounded-md outline-none w-full h-10 text-white transition-all duration-200"
@@ -160,7 +158,7 @@ const AuthForm = ({type}: {type: FormType}) => {
                     </div>
                 </>
             )}
-            <div className="relative w-2/3 lg:w-1/2">
+            <div className="relative w-full">
                 {error.email && <p className="mb-1 text-red-500 text-xs">{error.email}</p>}
                 <input name='email' type="email" value={formData.email} onChange={(e) => {setFormData({...formData, email: e.target.value})}}required 
                     className="peer bg-zinc-800 p-2 border border-zinc-700 focus:border-indigo-500 rounded-md outline-none w-full h-10 text-white transition-all duration-200"
@@ -169,7 +167,7 @@ const AuthForm = ({type}: {type: FormType}) => {
                     <span>Email*</span>
                 </label>
             </div>
-            <div className="relative w-2/3 lg:w-1/2">
+            <div className="relative w-full">
                 {error.password && <p className="mb-1 text-red-500 text-xs">{error.password}</p>}
                 <input name='password' type={show?'text':'password'} value={formData.password} onChange={(e) => {setFormData({...formData, password: e.target.value})}}required 
                     className="peer bg-zinc-800 p-2 border border-zinc-700 focus:border-indigo-500 rounded-md outline-none w-full h-10 text-white transition-all duration-200"
@@ -178,12 +176,12 @@ const AuthForm = ({type}: {type: FormType}) => {
                     <span>Password*</span>
                 </label>
                 <div onClick={() =>setShow(!show)} className='right-4 z-1 absolute flex justify-end p-2 rounded-full text-gray-400 -translate-y-9'>
-                    { show ? 'Show':'hide' }
+                    { show ? <Show/>:<Hide/> }
                 </div>
             </div>
             {type === 'sign-up' && (
                 <>
-                    <div className="relative w-2/3 lg:w-1/2">
+                    <div className="relative w-full">
                         {error.confirm && <p className="mb-1 text-red-500 text-xs">{error.confirm}</p>}
                         <input type={show?'text':'password'}  value={formData.confirm} onChange={(e) => {setFormData({...formData, confirm: e.target.value})}}required 
                             className="peer bg-zinc-800 p-2 border border-zinc-700 focus:border-indigo-500 rounded-md outline-none w-full h-10 text-white transition-all duration-200"
@@ -196,22 +194,32 @@ const AuthForm = ({type}: {type: FormType}) => {
             )}
             {type === 'sign-up' && (
                 <>
-                    <div className="flex gap-3 w-2/3 lg:w-1/2">
-                        <div className="relative bg-purple-700 p-2 px-3 w-auto h-10">Upload Profile pic<input className='left-0 absolute opacity-0 w-full' type='file' onChange={(e)=>{
+                    <div className="flex gap-3 w-full">
+                        <div className="relative gradient-bg rounded-md p-2 px-3 my-2 w-auto h-10">Upload Profile pic<input className='left-0 absolute opacity-0 w-full' type='file' onChange={(e)=>{
                             const file = e.target.files?.[0];
                             if (file) {
                                 setFile(file);
                             }}} name='file' accept="image/*" required placeholder='Upload'/></div>
                         {file && 
                         <div className="size-15">
-                            <Image width={100} height={100} className="w-full object-cover" src={convertFileToUrl(file)} alt="Profile" />
+                            <Image width={500} height={500} className="size-15 rounded-full object-cover" src={convertFileToUrl(file)} alt="Profile" />
                         </div>}
                     </div>
                 </>
             )}
-            <div className="w-2/3 lg:w-1/2">
-                {type === 'sign-up' && <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 p-2 rounded-md w-full font-semibold text-md">{loading? <PulseLoader color="#fff"/>:'Sign-up'}</button>}
-                {type === 'sign-in' && <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 p-2 rounded-md w-full font-semibold text-md">{loading? <PulseLoader color="#fff"/>:'Sign-in'}</button>}
+            <div className="w-full">
+                {type === 'sign-up' && 
+                    <motion.button
+                        whileHover={{scale: 1.05}}
+                        whileTap={{scale: 0.9}}
+                        type="submit" 
+                        className="gradient-bg2 p-2 rounded-md w-full font-semibold text-md">{loading? <PulseLoader color="#fff"/>:'Sign-up'}</motion.button>}
+                {type === 'sign-in' && 
+                    <motion.button
+                        whileHover={{scale: 1.05}}
+                        whileTap={{scale: 0.9}}
+                        type="submit" 
+                        className="gradient-bg2 p-2 rounded-md w-full font-semibold text-md">{loading? <PulseLoader color="#fff"/>:'Sign-in'}</motion.button>}
             </div>
         </form>
         <GoogleOAuthProvider clientId={googleID}>

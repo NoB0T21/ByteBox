@@ -28,7 +28,6 @@ export function AppWrapper({children}:{children: React.ReactNode}){
     useEffect(() => {
     // Try to load user from cookie on first render
     let userCookie = localStorage.getItem('user')
-    if(!userCookie)userCookie=Cookies.get('user')||''
     if (userCookie) {
       try {
         const parsedUser: User = JSON.parse(userCookie);

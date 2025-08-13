@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation'
     }
 
    return (
-    <button onClick={logout} className='flex justify-center items-center gap-2 bg-red-700 hover:bg-red-600 mx-2 p-1 rounded-full w-full sm:w-10 h-10'><Logout/><p className='sm:hidden flex'>Logout</p></button>
+    <button onClick={logout} className='flex justify-center items-center gap-2 bg-red-700 hover:bg-red-600 mx-2 p-1 rounded-full w-30 sm:w-10 h-10'><Logout/><p className='sm:hidden flex'>Logout</p></button>
    )
  }
  

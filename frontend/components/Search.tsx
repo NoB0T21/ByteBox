@@ -46,25 +46,25 @@ const Search = () => {
   }
   return (
     <div className='w-100 lg:w-150'>
-      <div className='flex items-center gap-4 w-full'>
-        <button onClick={()=>handleSubmit()} className='size-6'>
+      <div className='flex items-center gap-3 w-full'>
+        <button onClick={()=>handleSubmit()} className='size-7'>
           <Searchbtn/>
         </button>
-        <input placeholder='Search' value={search} onChange={(e)=>{setSearch(e.target.value);setType(path)}} type="text" className='bg-zinc-700 p-2 px-5 rounded-full outline-none w-full h-full' />
+        <input placeholder='Search' value={search} onChange={(e)=>{setSearch(e.target.value);setType(path)}} type="text" className='bg-[#2A2A2A] p-2 px-5 mb-1 rounded-full outline-none w-full h-full' />
       </div>
       {result.length<=0?'':<>
-        <div className='top-18 absolute flex flex-col gap-5 bg-zinc-700 p-4 rounded-xl w-100 lg:w-150 h-auto min-h-25'>
+        <div className='top-20 absolute flex flex-col gap-5 bg-[#2A2A2A] p-4 rounded-xl w-100 lg:w-150 h-auto min-h-25'>
         {result.map((file)=>{
           const {type,extension} = getFileType(file.originalname)
           const filesize = getFileSize(file.fileSize)
           return(<>
-          <div key={file._id} onClick={()=>{handleSubmit2({types:type,searchs:file.originalname})}} className='flex gap-5 bg-zinc-600 p-2 rounded-xl'>
+          <div key={file._id} onClick={()=>{handleSubmit2({types:type,searchs:file.originalname})}} className='flex gap-5 bg-[#1A1A1A] p-2 rounded-md hover:bg-gradient-to-r from-[#800080] to-[#6699FF] transition-all duration-300 ease-in-out'>
             <div className='w-15 h-full'>
               <Thumbnail type={type} extension={extension} url={file.imageURL}/>
             </div>
             <div className='flex flex-col justify-center w-full'>
               <div className='w-full font-medium text-xl truncate'>{file.originalname}</div>
-              <div className='flex justify-between w-full'>
+              <div className='flex text-[#AAAAAA] justify-between w-full'>
                 <div>{filesize}</div>
                 <div>{file.createdAt.split('T')[1].split(':')[0]}:{file.createdAt.split('T')[1].split(':')[1]}, {file.createdAt.split('T')[0]}</div>
               </div>

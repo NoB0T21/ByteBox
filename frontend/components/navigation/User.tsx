@@ -6,7 +6,7 @@ const User = () => {
     const {user} = useAppContext()
     const {name,email, picture} = user
   return (
-    <div className="flex sm:justify-center lg:justify-start items-center gap-2 bg-purple-900 mt-1 mb-5 sm:p-0 px-2 lg:px-2 rounded-xl sm:rounded-full w-full h-12 lg:h-14">
+    <div className="flex sm:justify-center lg:justify-start items-center gap-2 gradient-bg mt-1 mb-5 sm:p-0 px-2 lg:px-2 rounded-xl sm:rounded-full w-full h-12 lg:h-14">
         <div className="size-10 lg:size-11">
             <Image width={100} height={100} alt="profile" src={picture || '/Images/Logo.png'} className="rounded-full size-full object-cover"/>
         </div>

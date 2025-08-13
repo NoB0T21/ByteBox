@@ -2,7 +2,7 @@ import React from 'react'
 
 const TotalSize = ({size}:{size: string}) => {
   return (
-    <div>
+    <div className='text-[#AAAAAA]'>
       Total: {size}
     </div>
   )

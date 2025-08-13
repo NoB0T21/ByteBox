@@ -20,11 +20,11 @@ export default function ShortFile() {
     <>
     <div className='flex gap-1'>
       <form className="mx-auto max-w-sm">
-          <span>Sort:</span>
+          <span>Sort: </span>
           <select
             value={sort}
             onChange={(e)=>toggleSort(e)}
-            className="bg-zinc-600 p-2.5 rounded-lg text-sm"
+            className="bg-[#2A2A2A] p-1.5 rounded-md outline-none border-0 text-sm"
           >
             <option value="">Recent</option>
             <option value="Date-desc">Date ↑</option>

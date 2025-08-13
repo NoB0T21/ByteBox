@@ -12,7 +12,7 @@ const Toasts = ({type, msg}: {type: NotiType, msg: string}) => {
         setIsVisible(true)
         setTimeout(() => {
             setIsVisible(false)
-          }, 5000);
+          }, 3000);
     },[])
 
     return (
@@ -23,7 +23,7 @@ const Toasts = ({type, msg}: {type: NotiType, msg: string}) => {
                 initial={{ x:300, scale: 0 }}
                 animate={{x:0, scale: 1 }}
                 exit={{x:300,scale: 0 }}
-                    className={`absolute top-0 right-0 m-3 bg-zinc-800 p-2 w-65 rounded-md`}>
+                    className={`absolute z-999 top-0 right-0 m-3 bg-[#2A2A2A] p-2 w-65 rounded-md`}>
                         {type === 'warningMsg' && <>
                             <div className=" flex px-1 gap-2 justify-between items-center">
                                 <div className="flex gap-2 items-center">
@@ -49,7 +49,7 @@ const Toasts = ({type, msg}: {type: NotiType, msg: string}) => {
                         {type === 'erreoMsg' && <>
                             <div className=" flex px-1 gap-2 justify-between items-center">
                                 <div className="flex gap-2 items-center">
-                                    <div className="w-6 h-6 text-red-500"><Warning/></div>
+                                    <div className="w-6 h-6 text-[#FF6666]"><Warning/></div>
                                     <p className="text-md font-semibold">Error</p>
                                 </div>
                                 <div onClick={()=>{setIsVisible(false)}} className="p-1 text-md ">x</div>
@@ -60,7 +60,7 @@ const Toasts = ({type, msg}: {type: NotiType, msg: string}) => {
                         {type === 'successMsg' && <>
                             <div className=" flex px-1 gap-2 justify-between items-center">
                                 <div className="flex gap-2 items-center">
-                                    <div className="w-6 h-6 text-green-500"><Warning/></div>
+                                    <div className="w-6 h-6 text-[#33CC99]"><Warning/></div>
                                     <p className="text-md font-semibold">Success</p>
                                 </div>
                                 <div onClick={()=>{setIsVisible(false)}} className="p-1 text-md ">x</div>

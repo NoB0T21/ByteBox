@@ -10,15 +10,15 @@ export const Details = ({file,name}:{file:files,name:string}) => {
     
   return (
     <>
-    <div className="flex gap-5 p-4 border-1 border-zinc-500 rounded-md w-full">
+    <div className="flex gap-5 p-4 border-1 border-[#3A3A3A] rounded-md w-full">
         <div className='flex size-15'><Thumbnail type={type} extension={extension} url={file.imageURL}/></div>
         <div className="flex flex-col w-3/4">
             <div className='font-semibold truncate'>{file.originalname}</div>
-            <div className='font-semibold text-sm'>{file.createdAt.split('T')[0]}<br/>{file.createdAt.split('T')[1].split(':')[0]}:{file.createdAt.split('T')[1].split(':')[1]}</div>
+            <div className='font-semibold text-sm text-[#AAAAAA]'>{file.createdAt.split('T')[0]}<br/>{file.createdAt.split('T')[1].split(':')[0]}:{file.createdAt.split('T')[1].split(':')[1]}</div>
         </div>
     </div>
     <div className='flex gap-5 w-full'>
-        <div className='flex flex-col'>
+        <div className='flex text-[#AAAAAA] flex-col'>
             <p>Format:</p>
             <p>Size:</p>
             <p>Owner:</p>

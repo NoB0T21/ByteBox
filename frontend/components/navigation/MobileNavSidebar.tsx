@@ -12,8 +12,8 @@ const MobileNavSidebar = () => {
     <>
       <div onClick={()=>setShow(!show)} className='flex justify-center items-center m-1 w-8'><Menuses/></div>
       <div className={`${show?'flex ':'hidden'} absolute top-0 right-0 h-screen w-full  backdrop-blur-xs justify-end transition-all duration-300 ease-in-out`}>
-        <div className='flex flex-col gap-2 bg-zinc-900 p-3 rounded-l-xl w-3/4'>
-            <div className='mb-3' onClick={()=>setShow(!show)}>X</div>
+        <div className='flex flex-col gap-2 bg-zinc-900 p-3 rounded-l-xl w-3/4 max-w-[300px]'>
+            <div className='mb-3 bg-red-600 size-5 text-center content-center block rounded-sm' onClick={()=>setShow(!show)}>X</div>
             <User/>
             <div className="flex flex-col gap-2 py-4 w-full">
                 <div className="w-full h-10"><SideBarBtn pathname={'/'} name={'Dashboard'}/></div>

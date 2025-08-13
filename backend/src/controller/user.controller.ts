@@ -18,7 +18,6 @@ interface User {
 export const register = async (request: Request, response: any) => {
     const file = request.file as Express.Multer.File;
     const {name, email, password} = request.body
-    console.log(password)
     if(!name||!email||!password){
         return response.status(400).json({
             message: 'Require all fields',

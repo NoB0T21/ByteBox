@@ -6,6 +6,7 @@ import Toasts from "./toasts/Toasts";
 import { Google } from "./icon/Icons";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { motion } from "motion/react";
 
 const GoogleForm = () => {
 
@@ -24,7 +25,6 @@ const GoogleForm = () => {
           }
         })
         if(responses.status === 200){
-          localStorage.setItem('token',res.access_token)
           Cookies.set("token", res.access_token, {
             expires: 1, // days
             sameSite: "strict",
@@ -53,7 +53,7 @@ const GoogleForm = () => {
             picture: raw.picture
             }
         localStorage.setItem('user', JSON.stringify(user));
-        Cookies.set('user', JSON.stringify(user), { expires: 1 });
+        Cookies.set('user', user._id, { expires: 1 });
         router.push('/')
         return
       }
@@ -81,8 +81,16 @@ const GoogleForm = () => {
 
   return (
     <>
-    <div className="mt-5 w-2/3 lg:w-1/2">
-      <button onClick={()=>handleGoogleLogin()} className="bg-indigo-600 hover:bg-indigo-700 p-2 rounded-md w-full font-semibold text-md"><div className="flex justify-center gap-2 w-full h-6"><Google/>Google</div></button>
+    <div className="mt-5 w-full md:w-2/3 lg:w-full max-w-[450px] md:max-w-[350px]">
+      <motion.button
+        whileHover={{scale: 1.05}}
+        whileTap={{scale: 0.9}}
+        onClick={()=>handleGoogleLogin()} 
+        className="gradient-bg2 p-2 rounded-md w-full font-semibold text-md">
+          <div className="flex justify-center items-center gap-2 w-full h-6">
+            <Google/>Google
+          </div>
+        </motion.button>
     </div>
     {showToast && <Toasts type={tostType==='warningMsg'?'warningMsg':'infoMsg'} msg={responseMsg}/>}
     </>

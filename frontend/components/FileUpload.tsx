@@ -73,35 +73,36 @@ const FileUpload = () => {
   const {getRootProps, getInputProps} = useDropzone({onDrop})
 
   return (
-    <div {...getRootProps()} className='flex flex-col items-end cursor-pointer'>
-      <input {...getInputProps()} />
-      <button className='relative flex justify-center items-center bg-purple-800 rounded-md w-20 h-8'> upload <input className='left-0 absolute opacity-0 w-full h-full' type='file' name='file' placeholder='Upload'/></button>
-      {files.length>0 && (
-        <ul className='right-0 -bottom-1 absolute flex flex-col justify-center gap-2 bg-[#f7f7f723] drop-shadow-white backdrop-blur-sm m-5 rounded-md w-65'>
-          <h4 className='px-2 py-1 font-light'>Uploding...</h4>
-          {files.map((file, index)=>{
-            const{type, extension} = getFileType(file.name)
-            return(<li className='p-1' key={`${file.name}-${index}`}>
-              <div className='flex justify-between items-center px-2'>
-                <div className='flex justify-center items-center gap-2'>
-                  <Thumbnail
-                    type={type}
-                    extension={extension}
-                    url={type==='image'? convertFileToUrl(file) : '/'}
-                  />
-                  <div className='text-sm'>
-                    {file.name}
-                    <BarLoader color='#fff'/>
+    <>
+      <div {...getRootProps()} className='flex flex-col items-end cursor-pointer'>
+        <button className='relative flex justify-center items-center bg-[#800080] shadow-2xl shadow-[#B266B2] hover:scale-115 rounded-md w-20 h-8 transition-(scale) duration-300 ease-in-out'> upload <input {...getInputProps()} className='left-0 absolute opacity-0 w-full h-full' type='file' name='file' placeholder='Upload'/></button>
+        {files.length>0 && (
+          <ul className='right-0 -bottom-1 absolute flex flex-col justify-center gap-2 bg-[#f7f7f723] drop-shadow-white backdrop-blur-sm m-5 rounded-md w-65'>
+            <h4 className='px-2 py-1 font-light'>Uploding...</h4>
+            {files.map((file, index)=>{
+              const{type, extension} = getFileType(file.name)
+              return(<li className='p-1' key={`${file.name}-${index}`}>
+                <div className='flex justify-between items-center px-2'>
+                  <div className='flex justify-center items-center gap-2'>
+                    <Thumbnail
+                      type={type}
+                      extension={extension}
+                      url={type==='image'? convertFileToUrl(file) : '/'}
+                    />
+                    <div className='text-sm'>
+                      {file.name}
+                      <BarLoader color='#fff'/>
+                    </div>
                   </div>
+                  <div onClick={(e)=>handleRemoveFile(e,file.name)}>X</div>
                 </div>
-                <div onClick={(e)=>handleRemoveFile(e,file.name)}>X</div>
-              </div>
-            </li>)
-          })}
-        </ul>
-      )}
+              </li>)
+            })}
+          </ul>
+        )}
+      </div>
       {showToast && <Toasts type={tostType==='warningMsg'||tostType==='erreoMsg'?(tostType==='erreoMsg'?'erreoMsg':'warningMsg'):'successMsg'} msg={message}/>}
-    </div>
+    </>
   )
 }
 

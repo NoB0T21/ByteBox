@@ -43,7 +43,7 @@ const page = async ({params,searchParams}:SearchParamProps) => {
   return (
     <div className='flex flex-col items-center gap-8 w-full'>
       <section className='w-full'>
-        <div className='font-bold text-4xl'>{types==='Videos'?'Media':`${types}`}</div>
+        <div className='font-bold text-3xl md:text-4xl'>{types==='Videos'?'Media':`${types}`}</div>
         <div className='flex justify-between my-3 w-full h-[10%] font-medium text-md'>
           <TotalSize size={total}/>
           <ShortFile />

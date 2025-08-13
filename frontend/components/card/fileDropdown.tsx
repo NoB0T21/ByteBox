@@ -10,6 +10,7 @@ import Cookies from "js-cookie"
 import { revalidateFilesPage, revalidateShareTag } from "@/utils/actions/serverAction"
 import { Details} from "./Details"
 import Sharefile from "./Sharefile"
+import Toasts from "../toasts/Toasts"
 
 interface UsersIDs{
     _id:string;
@@ -22,6 +23,9 @@ interface UsersIDs{
 const fileDropdown = ({file}:{file: files}) => {
   const token = Cookies.get('token') || ''
   const [showDiv,setShowDiv] = useState(false)
+  const [showTost,setShowTost] = useState(false)
+  const [Tost,setTost] = useState('erreoMsg')
+  const [msg,setMsg] = useState('')
   const [showtypeDiv,setShowTypeDiv] = useState(true)
   const [typeDiv,setTypeDiv] = useState('')
   const [fileName,setFileName] = useState(file.originalname)
@@ -63,7 +67,9 @@ const fileDropdown = ({file}:{file: files}) => {
         withCredentials: true
       })
       
+      setMsg(response.data.message)
       setShowTypeDiv(true)
+      if(response.status===200){setTost('successMsg');setShowTost(true)}
       await revalidateFilesPage()
       return
     }
@@ -73,7 +79,9 @@ const fileDropdown = ({file}:{file: files}) => {
       },
       withCredentials: true
     })
+    setMsg(response.data.message)
     setShowTypeDiv(true)
+      if(response.status===200){setTost('successMsg');setShowTost(true)}
     await revalidateFilesPage()
   }
 
@@ -85,9 +93,12 @@ const fileDropdown = ({file}:{file: files}) => {
       },
       withCredentials: true
     })
+    setMsg(response.data.message)
     await revalidateShareTag()
+    if(response.status===200){setTost('successMsg');setShowTost(true)}
     setShareUser([])
   }
+
   const handleRemoveUser=async(userId:string) => {
     const updatedEmails = file.shareuser.filter((e) => e !== userId);
     const response = await api.post(`/file/updateshare/${file._id}`,{shareuser: updatedEmails},{
@@ -96,7 +107,9 @@ const fileDropdown = ({file}:{file: files}) => {
       },
       withCredentials: true
     })
+    setMsg(response.data.message)
     await revalidateShareTag()
+    if(response.status===200){setTost('successMsg');setShowTost(true)}
   }
 
   const handleDelete = async () => {
@@ -106,12 +119,19 @@ const fileDropdown = ({file}:{file: files}) => {
       },
       withCredentials: true
     })
-      
+    setMsg(response.data.message)
     await revalidateFilesPage()
     setShowTypeDiv(true)
     setShowDiv(false)
+    if(response.status===200){setTost('successMsg');setShowTost(true)}
     return
   }
+
+  useEffect(()=>{
+      setTimeout(() => {
+          setShowTost(false)
+        }, 3000);
+  },[showTost])
 
   return (
     <>
@@ -123,26 +143,26 @@ const fileDropdown = ({file}:{file: files}) => {
         animate={{opacity:1,y:0}}
         exit={{opacity:0,y:-100}}
         className='top-0 left-0 z-20 absolute flex justify-center items-center backdrop-blur-xs w-full h-full'>
-          <div className="bg-zinc-800 p-4 rounded-xl w-85 md:w-120">
+          <div className="bg-zinc-800 p-4 rounded-xl w-85 md:w-120 max-w-[400px]">
               {showtypeDiv?<><div className="flex justify-between gap-2">
-                <div className='mb-3 font-semibold text-[1.2rem] truncate'>{file.originalname}</div>
-                <div onClick={()=>{setShowDiv(false)}}>x</div>
+                <div className='mb-3 font-semibold text-[1.2rem] text-[#AAAAAA] truncate'>{file.originalname}</div>
+                <div className="bg-red-600 rounded-md size-5 text-center content-center block" onClick={()=>{setShowDiv(false)}}>x</div>
               </div>
             {actionDropdown.map((items)=>(
               <div key={items.value} className="flex flex-col gap-3" onClick={()=>{if(items.lable!=='Download')setShowTypeDiv(false);setTypeDiv(items.lable)}} ><Items key={items.value} lable={items.lable} url={file.imageURL} file={file}/></div>
             ))}</>:<>
               <div className="flex justify-between gap-2">
-                <div className='flex gap-4 mb-3 w-full font-semibold text-[1.2rem] truncate'>
-                  <div className="flex justify-center w-full">{typeDiv}</div>
-                  <div className="" onClick={()=>{setShowTypeDiv(true)}}>x</div>
+                <div className='flex gap-4 w-full font-semibold text-[1.2rem] truncate'>
+                  <div className="flex justify-center w-[95%]">{typeDiv}</div>
+                  <div className="bg-red-600 rounded-md size-5 text-center content-center block" onClick={()=>{setShowTypeDiv(true)}}>x</div>
                 </div>
               </div>
               <div className="flex flex-col items-center gap-5 p-3 w-full h-full text-[1.2rem]">
                 {typeDiv==='Rename' && <>
                     <input className="bg-zinc-600 mx-2 p-2 px-4 rounded-full w-full" type="text" name="name" onChange={(e)=>setFileName(e.target.value)} value={fileName} />
                     <div className="flex justify-between gap-3 w-full">
-                      <div className="flex justify-center items-center bg-zinc-700 px-5 py-1 rounded-full w-1/2" onClick={()=>{setShowTypeDiv(true)}}>cancle</div>
-                      <button onClick={(e)=>handleRname(e)} className="flex justify-center items-center bg-purple-600 px-5 py-1 rounded-full w-1/2">save</button>
+                      <div className="flex justify-center items-center bg-zinc-600 px-5 py-1 rounded-full w-1/2" onClick={()=>{setShowTypeDiv(true)}}>cancle</div>
+                      <button onClick={(e)=>handleRname(e)} className="flex justify-center items-center bg-[#800080] px-5 py-1 rounded-full w-1/2">save</button>
                     </div>
                 </>}
 
@@ -157,7 +177,7 @@ const fileDropdown = ({file}:{file: files}) => {
                   onRemove={handleRemoveUser}
                   shareUserid={shareUserid}/>
                   <div className="flex gap-3">
-                    <div onClick={(e)=>handleshare(e)} className="flex justify-center items-center bg-purple-700 rounded-full w-25 h-12">Share</div>
+                    <div onClick={(e)=>handleshare(e)} className="flex justify-center items-center bg-[#800080] rounded-full w-25 h-12">Share</div>
                   </div>
                 </>}
                 
@@ -174,6 +194,7 @@ const fileDropdown = ({file}:{file: files}) => {
           </motion.div>}</AnimatePresence>
         </>}
       </div>
+      {showTost && <Toasts type={Tost==='erreoMsg'?'erreoMsg':'successMsg'} msg={msg}/>}
     </>
   )
 }

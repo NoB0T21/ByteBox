@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <header className='flex justify-between items-center px-2 w-full h-20'>
         <Search/>
-      <div className='flex items-center'>
+      <div className='flex h-20 items-center'>
         <FileUpload/>
         <Logoutbtn/>
       </div>
