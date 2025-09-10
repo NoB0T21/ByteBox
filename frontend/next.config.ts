@@ -12,7 +12,6 @@ const nextConfig: NextConfig = {
         hostname: "lh3.googleusercontent.com",
       }
     ],
-    domains: ['dsiwprmwzkvgdcdhzhwa.supabase.co','lh3.googleusercontent.com'], // allow images from Supabase
   },
   typescript: {
     ignoreBuildErrors: true,

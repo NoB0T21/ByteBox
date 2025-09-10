@@ -55,3 +55,15 @@ body {
 .gradient-bg2{
   background: linear-gradient(135deg, #800080, #6699FF);
 }
+
+.typing {
+  width: 11ch;                     
+  white-space: nowrap;              
+  overflow: hidden;
+  animation: typing 1s steps(20) infinite alternate-reverse;
+}
+
+@keyframes typing {
+  from { width: 8ch; }
+  to   { width: 11ch; }
+}

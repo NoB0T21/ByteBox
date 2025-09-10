@@ -77,8 +77,8 @@ const FileUpload = () => {
       <div {...getRootProps()} className='flex flex-col items-end cursor-pointer'>
         <button className='relative flex justify-center items-center bg-[#800080] shadow-2xl shadow-[#B266B2] hover:scale-115 rounded-md w-20 h-8 transition-(scale) duration-300 ease-in-out'> upload <input {...getInputProps()} className='left-0 absolute opacity-0 w-full h-full' type='file' name='file' placeholder='Upload'/></button>
         {files.length>0 && (
-          <ul className='right-0 -bottom-1 absolute flex flex-col justify-center gap-2 bg-[#f7f7f723] drop-shadow-white backdrop-blur-sm m-5 rounded-md w-65'>
-            <h4 className='px-2 py-1 font-light'>Uploding...</h4>
+          <ul className='right-0 -bottom-1 absolute flex flex-col justify-center gap-2 bg-[#2a2a2a] drop-shadow-[#800080] drop-shadow-md m-5 rounded-md w-68'>
+            <h4 className='px-2 py-1 font-light typing'>Uploding...</h4>
             {files.map((file, index)=>{
               const{type, extension} = getFileType(file.name)
               return(<li className='p-1' key={`${file.name}-${index}`}>
@@ -89,7 +89,7 @@ const FileUpload = () => {
                       extension={extension}
                       url={type==='image'? convertFileToUrl(file) : '/'}
                     />
-                    <div className='text-sm'>
+                    <div className='space-y-1 w-40 text-sm truncate'>
                       {file.name}
                       <BarLoader color='#fff'/>
                     </div>

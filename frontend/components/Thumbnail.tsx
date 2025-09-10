@@ -12,7 +12,7 @@ const Thumbnail = ({type,extension,url=''}:Props) => {
     const isImage = type==="image" && extension!=="svg"
   return (
     <figure>
-      {type==='image'?<Image src={url} alt='prev' width={100} height={100} className='w-16 h-full rounded-full' />:<FileLoge type={extension} extension={type}/>}
+      {type==='image'?<Image src={url} alt='prev' width={500} height={500} className='rounded-full size-16' />:<FileLoge type={extension} extension={type}/>}
     </figure>
   )
 }

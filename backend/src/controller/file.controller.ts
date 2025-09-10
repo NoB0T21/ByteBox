@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import uuid from "uuid4";
 import supabase from "../Db/supabase";
-import { createfile, deletefiles, getfileBySearch, getfiles, getfiless, renamefiles, sharefiles, updatesharefiles } from "../services/file.service";
+import { createfile, deletefiles, getfileBySearch, getfiles, getfilesll, getfiless, renamefiles, sharefiles, updatesharefiles } from "../services/file.service";
 import {findUser, findUsers} from "../services/user.service"
 
 export const uploadFile = async (request: Request, response: Response) => {
@@ -14,7 +14,6 @@ export const uploadFile = async (request: Request, response: Response) => {
         });
         return
     }
-
 
     try {
         const files = file.originalname.split(" ").join("");
@@ -62,7 +61,7 @@ export const uploadFile = async (request: Request, response: Response) => {
         });
         return
     }
-};
+}; 
 
 export const getfile = async (request: Request, response: any) => {
     const email = request.user.email
@@ -128,6 +127,30 @@ export const getfile = async (request: Request, response: any) => {
             success: true,
         });
     }
+}
+
+export const getfilell = async (request: Request, response: any) => {
+    const email = request.user.email
+
+    const user = await findUser({email})
+    const id = user?._id
+
+    if(!email){
+        response.status(400).json({
+            message: "Require all fields",
+            success: false,
+        });
+        return
+    }
+    
+    const file:any = await getfilesll({id})
+
+    return response.status(200).json({
+        message: "File Present",
+        file:file,
+        success: true,
+    });
+    
 }
 
 export const renamefile = async (request: Request, response: any) => {
@@ -216,8 +239,9 @@ export const deletefile = async (request: Request, response: any) => {
         .storage
         .from('box')
         .remove([file.path]);
-                
+
     if (error) {
+        console.log('hello',error);
         response.status(400).json({
             message: error,
             success: false,

@@ -35,6 +35,15 @@ export const  getfiles = async ({id}:{id: any}) => {
  return file
 }
 
+export const  getfilesll = async ({id}:{id: any}) => {
+ if(!id) return
+ const file = await fileModel.find({$or: [
+    { owner: id },
+    { shareuser: id }
+  ]}).sort({ createdAt: -1 }).limit(6);
+ return file
+}
+
 export const  renamefiles = async ({id,originalname}:{id: string, originalname: string}) => {
  if(!id) return
  const file = await fileModel.findOneAndUpdate({_id: id},{originalname});

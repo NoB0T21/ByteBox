@@ -16,6 +16,21 @@ export const getFiles = async ({ token }: { token: string }) => {
     return files.file
 }
 
+export const getFilesll = async ({ token }: { token: string }) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/file/getfile/ll`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        credentials: 'include',
+        next: {
+            tags: ['files'], 
+            },
+    })
+    const files = await res.json()
+    return files.file
+}
+
 export const getShareuser = async ({ token }: { token: string}) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/file/getfile`, {
         method: 'GET',

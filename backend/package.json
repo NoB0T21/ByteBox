@@ -6,8 +6,8 @@
   "scripts": {
     "test": "jest",
     "client": " npm run dev --prefix ../frontend",
-    "start": "dotenv -- nodemon --onsuccess npm run build",
-    "dev": "dotenv -- nodemon --onsuccess npm run build",
+    "start": "node ./dist/server.js",
+    "dev": "node ./dist/server.js",
     "build": "tsc"
   },
   "author": "Aryan Gawade (NoB0T)",

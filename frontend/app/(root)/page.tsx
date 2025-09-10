@@ -2,13 +2,13 @@ import AvailableStorage from "@/components/dashbord/AvailableStorage";
 import RecentFile from "@/components/dashbord/RecentFile";
 import TypeFile from "@/components/dashbord/TypeFile";
 import { files } from "@/Types";
-import { getFiles } from "@/utils/actions/fileActions";
+import { getFilesll } from "@/utils/actions/fileActions";
 import { getFileSize, getFileSizeinPercentage } from "@/utils/utils";
 import { cookies, } from 'next/headers';
 
 export default async function Home() {
   const token = (await cookies()).get('token')?.value || ''
-  const file:files[] = await getFiles({token: token})
+  const file:files[] = await getFilesll({token: token})
   let sum:any =0;
   const size =await file.forEach((f: files)=>{
     return sum += f.fileSize

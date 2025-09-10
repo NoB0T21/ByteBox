@@ -122,7 +122,6 @@ const AuthForm = ({type}: {type: FormType}) => {
               return
             }
             const token = response.data.token
-            console.log(response.data.user)
             const raw = response.data.user;
             const user = {
             _id: raw._id,
@@ -195,14 +194,14 @@ const AuthForm = ({type}: {type: FormType}) => {
             {type === 'sign-up' && (
                 <>
                     <div className="flex gap-3 w-full">
-                        <div className="relative gradient-bg rounded-md p-2 px-3 my-2 w-auto h-10">Upload Profile pic<input className='left-0 absolute opacity-0 w-full' type='file' onChange={(e)=>{
+                        <div className="relative my-2 p-2 px-3 rounded-md w-auto h-10 gradient-bg">Upload Profile pic<input className='left-0 absolute opacity-0 w-full' type='file' onChange={(e)=>{
                             const file = e.target.files?.[0];
                             if (file) {
                                 setFile(file);
                             }}} name='file' accept="image/*" required placeholder='Upload'/></div>
                         {file && 
                         <div className="size-15">
-                            <Image width={500} height={500} className="size-15 rounded-full object-cover" src={convertFileToUrl(file)} alt="Profile" />
+                            <Image width={500} height={500} className="rounded-full size-15 object-cover" src={convertFileToUrl(file)} alt="Profile" />
                         </div>}
                     </div>
                 </>
@@ -213,13 +212,13 @@ const AuthForm = ({type}: {type: FormType}) => {
                         whileHover={{scale: 1.05}}
                         whileTap={{scale: 0.9}}
                         type="submit" 
-                        className="gradient-bg2 p-2 rounded-md w-full font-semibold text-md">{loading? <PulseLoader color="#fff"/>:'Sign-up'}</motion.button>}
+                        className="p-2 rounded-md w-full font-semibold text-md gradient-bg2">{loading? <PulseLoader color="#fff"/>:'Sign-up'}</motion.button>}
                 {type === 'sign-in' && 
                     <motion.button
                         whileHover={{scale: 1.05}}
                         whileTap={{scale: 0.9}}
                         type="submit" 
-                        className="gradient-bg2 p-2 rounded-md w-full font-semibold text-md">{loading? <PulseLoader color="#fff"/>:'Sign-in'}</motion.button>}
+                        className="p-2 rounded-md w-full font-semibold text-md gradient-bg2">{loading? <PulseLoader color="#fff"/>:'Sign-in'}</motion.button>}
             </div>
         </form>
         <GoogleOAuthProvider clientId={googleID}>

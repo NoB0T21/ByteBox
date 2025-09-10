@@ -33,24 +33,25 @@ const fileDropdown = ({file}:{file: files}) => {
   const [shareUserid,setShareUserid] = useState<UsersIDs[]>([])
   const [name,setName] = useState('')
 
-  useEffect (()=>{
-    const fetchUsers = async () => {
+  const fetchUsers = async () => {
     const usersID = file.shareuser;
-      const response = await api.post('/user/getshareUSer', usersID, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
-      });
-      setShareUserid(response.data.data)
-      const user=  await api.get(`/user/getuser/${file.owner}`,{
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        withCredentials: true,
+    const response = await api.post('/user/getshareUSer', usersID, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    });
+    setShareUserid(response.data.data)
+    const user=  await api.get(`/user/getuser/${file.owner}`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
     })
     setName(user.data.data.name)
   };
+
+  useEffect (()=>{
     fetchUsers()
   },[file.shareuser])
 
@@ -145,8 +146,8 @@ const fileDropdown = ({file}:{file: files}) => {
         className='top-0 left-0 z-20 absolute flex justify-center items-center backdrop-blur-xs w-full h-full'>
           <div className="bg-zinc-800 p-4 rounded-xl w-85 md:w-120 max-w-[400px]">
               {showtypeDiv?<><div className="flex justify-between gap-2">
-                <div className='mb-3 font-semibold text-[1.2rem] text-[#AAAAAA] truncate'>{file.originalname}</div>
-                <div className="bg-red-600 rounded-md size-5 text-center content-center block" onClick={()=>{setShowDiv(false)}}>x</div>
+                <div className='mb-3 font-semibold text-[#AAAAAA] text-[1.2rem] truncate'>{file.originalname}</div>
+                <div className="block content-center bg-red-600 rounded-md size-5 text-center" onClick={()=>{setShowDiv(false)}}>x</div>
               </div>
             {actionDropdown.map((items)=>(
               <div key={items.value} className="flex flex-col gap-3" onClick={()=>{if(items.lable!=='Download')setShowTypeDiv(false);setTypeDiv(items.lable)}} ><Items key={items.value} lable={items.lable} url={file.imageURL} file={file}/></div>
@@ -154,7 +155,7 @@ const fileDropdown = ({file}:{file: files}) => {
               <div className="flex justify-between gap-2">
                 <div className='flex gap-4 w-full font-semibold text-[1.2rem] truncate'>
                   <div className="flex justify-center w-[95%]">{typeDiv}</div>
-                  <div className="bg-red-600 rounded-md size-5 text-center content-center block" onClick={()=>{setShowTypeDiv(true)}}>x</div>
+                  <div className="block content-center bg-red-600 rounded-md size-5 text-center" onClick={()=>{setShowTypeDiv(true)}}>x</div>
                 </div>
               </div>
               <div className="flex flex-col items-center gap-5 p-3 w-full h-full text-[1.2rem]">

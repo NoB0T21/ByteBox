@@ -7,7 +7,7 @@ function connectToDb() {
     }
     mongoose.connect(URL)
     .then(()=>{console.log('Connedted to Db')})
-    .catch((error)=>{console.log('Failed to connect Db')})
+    .catch((error)=>{console.log('❌ Failed to connect Db')})
 }
 
 export default connectToDb

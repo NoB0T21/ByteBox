@@ -38,7 +38,7 @@ const FileCard = async ({file,types,extrnsion,userId} : {file:files, types: stri
             <p className='truncate'>{file.originalname}</p>
             <div className='relative flex justify-between'>
               <p className='text-[#AAAAAA]'>{file.createdAt.split('T')[0]}</p>
-              <p>{file.owner!==userId ? <>
+              <div>{file.owner!==userId ? <>
                 <div className='peer m-3 size-8'><SharedFile/></div>
                 <div className='top-0 -right-8 absolute bg-zinc-950 opacity-0 peer-hover:opacity-100 px-1 border-1 transition-(opacity) duration-200 ease-in-out'>shared by {user.name}</div>
               </> : <>
@@ -47,7 +47,7 @@ const FileCard = async ({file,types,extrnsion,userId} : {file:files, types: stri
                     <FileShareee/>
                   </div>
                   <div className='top-0 -right-8 absolute bg-zinc-950 opacity-0 peer-hover:opacity-100 px-1 border-1 transition-(opacity) duration-200 ease-in-out'>this file is been shared with users</div>
-              </> : ''}</>}</p>
+              </> : ''}</>}</div>
             </div>
         </div>
     </div>
