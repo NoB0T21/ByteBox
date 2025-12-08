@@ -7,7 +7,8 @@ const cachData = async (req:Request, res:Response, next:NextFunction) => {
 
     const cached = await redis.get(cacheKey);
     if (cached) {
-        return res.status(200).json(JSON.parse(cached));
+        res.status(200).json(JSON.parse(cached));
+        return
     }else {
         next()
     }
