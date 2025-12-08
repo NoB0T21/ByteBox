@@ -110,35 +110,57 @@ const AuthForm = ({type}: {type: FormType}) => {
             if (file) {
                 form.append('file', file);
             }
-        const response = await api.post(type === 'sign-in'? '/user/signin':'/user/signup',type === 'sign-in'? formData:form,{withCredentials: true})
-        if(response.status !== 201){
-            setResponseMsg(response.data.message)
-            if(response.status === 202)setTostType('infoMsg');
-            setLoading(false)
-            setShowToast(true)
-            setTimeout(() => {
-                setShowToast(false)
-              }, 6000);
-              return
+            let timer
+            try {
+                const response = await api.post(type === 'sign-in'? '/user/signin':'/user/signup',type === 'sign-in'? formData:form,{withCredentials: true})
+                setResponseMsg(response.data.message)
+                if(response?.status === 202){
+                    setTostType('infoMsg');
+                    setLoading(false)
+                    setShowToast(true)
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        setShowToast(false)
+                    }, 3000);
+                    setLoading(false)
+                    router.push('/sign-in')
+                    return
+                }
+                const token = response.data.token
+                    const raw = response.data.user;
+                    const user = {
+                    _id: raw._id,
+                    name: raw.name,
+                    email: raw.email,
+                    picture: raw.picture
+                    };
+                        
+                    Cookies.set('user', user._id, { expires: 1 });
+                    localStorage.setItem('user', JSON.stringify(user));
+                    Cookies.set("token", token, {
+                        expires: 1, // days
+                        sameSite: "strict",
+                        secure: true
+                    });
+                router.push('/')
+                setLoading(false)
+            } catch (error: any) {
+                const errRes = error.response.data;
+                if(error.response?.status !== 201){
+                    setResponseMsg(errRes.message)
+                    if(error.response?.status === 492){
+                        setTostType('warningMsg');
+                    }
+                    if(error.response?.status === 202)setTostType('infoMsg');
+                    setLoading(false)
+                    setShowToast(true)
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        setShowToast(false)
+                      }, 4000);
+                      return
+                    }
             }
-            const token = response.data.token
-            const raw = response.data.user;
-            const user = {
-            _id: raw._id,
-            name: raw.name,
-            email: raw.email,
-            picture: raw.picture
-            };
-                
-            Cookies.set('user', user._id, { expires: 1 });
-            localStorage.setItem('user', JSON.stringify(user));
-            Cookies.set("token", token, {
-                expires: 1, // days
-                sameSite: "strict",
-                secure: true
-            });
-        router.push('/')
-        setLoading(false)
     }
 
   return (
@@ -212,12 +234,14 @@ const AuthForm = ({type}: {type: FormType}) => {
                         whileHover={{scale: 1.05}}
                         whileTap={{scale: 0.9}}
                         type="submit" 
+                        disabled={loading?true:false}
                         className="p-2 rounded-md w-full font-semibold text-md gradient-bg2">{loading? <PulseLoader color="#fff"/>:'Sign-up'}</motion.button>}
                 {type === 'sign-in' && 
                     <motion.button
                         whileHover={{scale: 1.05}}
                         whileTap={{scale: 0.9}}
                         type="submit" 
+                        disabled={loading?true:false}
                         className="p-2 rounded-md w-full font-semibold text-md gradient-bg2">{loading? <PulseLoader color="#fff"/>:'Sign-in'}</motion.button>}
             </div>
         </form>

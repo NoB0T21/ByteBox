@@ -18,7 +18,7 @@ const RecentFile = async ({file}:{file:files[]}) => {
   return (
     <div className='flex flex-col items-center'>
         <p className='font-medium text-xl lg:text-5xl'>Recent File</p>
-      {file.length >0 ? 
+      {file && file.length > 0? 
         <div className='flex flex-col gap-6 px-2 py-5 w-full h-50'>
           {file.map((f: files)=>{
             const {type,extension} = getFileType(f.originalname)

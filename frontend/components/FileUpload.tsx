@@ -26,7 +26,7 @@ const FileUpload = () => {
       if(file.size > MAX_FILE_SIZE){
         setFiles((prevFiles)=>prevFiles.filter((f)=>f.name!==file.name))
         setTostType('warningMsg')
-          setMessage('Max size is 100MB')
+          setMessage('Max size is 50MB')
         setShowToast(true)
         setTimeout(() => {
           setShowToast(false)

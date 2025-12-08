@@ -28,7 +28,7 @@ export const register = async (request: Request, response: any) => {
         const existingUsers = await findUser({email})
         if(existingUsers){
             return response.status(202).json({
-                message: "User already exists",
+                message: "email already exists, Please Sign-in",
                 user: existingUsers,
                 success: false,
             })}
@@ -36,7 +36,7 @@ export const register = async (request: Request, response: any) => {
         const files = file?.originalname.split(" ").join("");
         const uniqueFilename = `${uuid4()}-${files}`;
         const { data, error } = await supabase.storage
-            .from("box")
+            .from(process.env.SUPABASE_BUCKET || '')
             .upload(uniqueFilename, file?.buffer, {
                 contentType: file?.mimetype,
                 cacheControl: "3600",
@@ -50,7 +50,7 @@ export const register = async (request: Request, response: any) => {
             return
         }
         const publicUrlData = await supabase.storage
-            .from("box")
+            .from(process.env.SUPABASE_BUCKET || '')
             .getPublicUrl(`${uniqueFilename}`);
 
         const hashPassword = await userModel.hashpassword(password)

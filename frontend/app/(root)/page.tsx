@@ -10,9 +10,9 @@ export default async function Home() {
   const token = (await cookies()).get('token')?.value || ''
   const file:files[] = await getFilesll({token: token})
   let sum:any =0;
-  const size =await file.forEach((f: files)=>{
+  const size =file? await file.forEach((f: files)=>{
     return sum += f.fileSize
-  },0)
+  },0) : 0
   const percentage = getFileSizeinPercentage(sum)
   const sizes = getFileSize(sum)
   

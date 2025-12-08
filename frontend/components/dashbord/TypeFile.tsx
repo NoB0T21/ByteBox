@@ -14,22 +14,22 @@ const TypeFile = async ({file}:{file:files[]}) => {
     let videosum:any =0;
     let imagesum:any =0;
     let othersum:any =0;
-    let dd = await file.forEach((f: files)=>{
+    let dd = file? await file.forEach((f: files)=>{
         const {type} = getFileType(f.originalname)
         if(type==='document'){return Documentsum += f.fileSize}
-      },0)
-    dd = await file.forEach((f: files)=>{
+      },0) : 0
+    dd = file? await file.forEach((f: files)=>{
         const {type} = getFileType(f.originalname)
         if(type==='video'){return videosum += f.fileSize}
-      },0)
-    dd = await file.forEach((f: files)=>{
+      },0): 0
+    dd = file? await file.forEach((f: files)=>{
         const {type} = getFileType(f.originalname)
         if(type==='image'){return imagesum += f.fileSize}
-      },0)
-    dd = await file.forEach((f: files)=>{
+      },0): 0
+    dd = file? await file.forEach((f: files)=>{
         const {type} = getFileType(f.originalname)
         if(type==='other'){return othersum += f.fileSize}
-      },0)
+      },0): 0
       const Document = getFileSize(Documentsum)
       const video = getFileSize(videosum)
       const image = getFileSize(imagesum)
@@ -39,7 +39,7 @@ const TypeFile = async ({file}:{file:files[]}) => {
     <div className='gap-4 grid lg:grid-cols-4 sm:grid-rows-4 h-full'>
         {links.map((link,idx)=>(
             <div key={idx} className='lg:col-span-2 row-span-1 lg:row-span-2'>
-            <Link href={link} className='flex lg:flex-col gap-5 bg-[#2A2A2A] hover:bg-gradient-to-r from-[#800080] to-[#B266B2] hover:scale-102 px-3 py-2 rounded-xl w-full h-full cursor-pointer transition-all duration-300 ease-in-out'>
+            <Link href={link} className='flex lg:flex-col gap-5 bg-[#2A2A2A] hover:bg-gradient-to-r from-[#800080] to-[#B266B2] px-3 py-2 rounded-xl w-full h-full hover:scale-102 transition-all duration-300 ease-in-out cursor-pointer'>
                 <div className='flex justify-between items-center gap-4 w-full'>
                     <div className={`${colou[idx]} shadow-[#B266B2] shadow-md rounded-full size-13 lg:size-20 lg:p-2`}>
                         {icons[idx]}

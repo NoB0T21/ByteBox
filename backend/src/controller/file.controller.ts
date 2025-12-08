@@ -3,8 +3,10 @@ import uuid from "uuid4";
 import supabase from "../Db/supabase";
 import { createfile, deletefiles, getfileBySearch, getfiles, getfilesll, getfiless, renamefiles, sharefiles, updatesharefiles } from "../services/file.service";
 import {findUser, findUsers} from "../services/user.service"
+import redis from "../Db/redis";
 
 export const uploadFile = async (request: Request, response: Response) => {
+    const email = request.user.email
     const { file } = request;
     const { owner } = request.body;
     if (!file || !owner) {
@@ -38,6 +40,8 @@ export const uploadFile = async (request: Request, response: Response) => {
         const publicUrlData = await supabase.storage
             .from("box")
             .getPublicUrl(`${uniqueFilename}`);
+
+        await redis.del(`files:${email}`);
 
         const newFile = await createfile({
             owner: owner,
@@ -121,6 +125,14 @@ export const getfile = async (request: Request, response: any) => {
             });
             return
         }
+
+        const cacheKey = `files:${email}`
+        await redis.set(cacheKey, JSON.stringify({
+            message: "File Present",
+            file:sortedFiles,
+            success: true,
+        }), "EX", 180);
+
         return response.status(200).json({
             message: "File Present",
             file:sortedFiles,
@@ -144,6 +156,13 @@ export const getfilell = async (request: Request, response: any) => {
     }
     
     const file:any = await getfilesll({id})
+
+    const cacheKey = `files:${email}`
+    await redis.set(cacheKey, JSON.stringify({
+        message: "File Present",
+        file:file,
+        success: true,
+    }), "EX", 180);
 
     return response.status(200).json({
         message: "File Present",
