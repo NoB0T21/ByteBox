@@ -26,5 +26,8 @@ app.use('/file',fileRoutes)
 app.get('/',(req,res)=>{
     res.send(`working on ${process.env.PORT}`)
 });
+app.get('/api/keep-warm',(req,res)=>{
+    res.status(200).json({ warm: true });
+});
 
 export default app;
