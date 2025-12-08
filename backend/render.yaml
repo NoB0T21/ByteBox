@@ -2,9 +2,10 @@ services:
   - name: bytebox-backend
     type: web
     env: node
-    region: singapore     # choose your region
+    region: singapore 
     plan: starter
-    buildCommand: "npm install"
+    rootDir: backend    # choose your region
+    buildCommand: "npm ci"
     startCommand: "npm start"
     envVars:
       - key: REDIS_HOST
@@ -19,6 +20,7 @@ services:
     region: singapore
     plan: starter
     env: docker
+    rootDir: backend/redis
     dockerfilePath: ./redis/Dockerfile
     disk:
       name: redis-data
