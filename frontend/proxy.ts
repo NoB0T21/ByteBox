@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { api } from "./utils/api";
 
-export async function middleware (request: NextRequest){
+export async function proxy (request: NextRequest){
     const path = request.nextUrl.pathname;
     const isPublicRout = path === '/sign-up' || path === '/sign-in'
 

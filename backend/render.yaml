@@ -1,0 +1,26 @@
+services:
+  - name: bytebox-backend
+    type: web
+    env: node
+    region: singapore     # choose your region
+    plan: starter
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    envVars:
+      - key: REDIS_HOST
+        value: bytebox-redis
+      - key: REDIS_PORT
+        value: 6379
+      # - key: REDIS_PASSWORD
+      #   value: yourpassword   # only if you configured one
+
+  - name: bytebox-redis
+    type: private_service
+    region: singapore
+    plan: starter
+    env: docker
+    dockerfilePath: ./redis/Dockerfile
+    disk:
+      name: redis-data
+      mountPath: /data
+      sizeGB: 1
