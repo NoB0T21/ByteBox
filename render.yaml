@@ -1,27 +1,24 @@
 services:
+  # Backend API (Web Service)
   - name: bytebox-backend
     type: web
     env: node
-    region: singapore 
-    plan: starter
-    rootDir: backend    # choose your region
-    buildCommand: "rootDir: backend/redis"
-    startCommand: "npm start"
+    rootDir: backend
+    buildCommand: "npm install && npm run build"
+    startCommand: "npm run start"
     envVars:
       - key: REDIS_HOST
         value: bytebox-redis
       - key: REDIS_PORT
         value: 6379
-      # - key: REDIS_PASSWORD
-      #   value: yourpassword   # only if you configured one
 
+  # Redis running as a DOCKER Web Service (NOT private_service)
   - name: bytebox-redis
-    type: private_service
-    region: singapore
-    plan: starter
+    type: web        # ← IMPORTANT: must be "web"
     env: docker
     rootDir: backend/redis
-    dockerfilePath: ./redis/Dockerfile
+    dockerfilePath: backend/redis/Dockerfile
+    plan: free
     disk:
       name: redis-data
       mountPath: /data
