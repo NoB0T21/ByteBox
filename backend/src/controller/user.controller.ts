@@ -81,6 +81,7 @@ export const register = async (request: Request, response: any) => {
 }
 
 export const login = async (request: Request, response:any) => {
+    console.log(request.body)
     const {email, password} = request.body
     if(!email||!password){
         return response.status(400).json({

@@ -31,7 +31,11 @@ export const  getfiles = async ({id}:{id: any}) => {
  const file = await fileModel.find({$or: [
     { owner: id },
     { shareuser: id }
-  ]});
+  ]})
+  .populate({
+      path: "shareuser",
+      select: "name email picture",
+    });
  return file
 }
 
