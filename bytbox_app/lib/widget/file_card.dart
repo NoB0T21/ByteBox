@@ -1,5 +1,7 @@
 import 'package:bytbox_app/utils/file_actions.dart';
+import 'package:bytbox_app/utils/file_size.dart';
 import 'package:bytbox_app/utils/file_type.dart';
+import 'package:bytbox_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -11,11 +13,10 @@ class FileCard extends ConsumerWidget {
     super.key,
     required this.file
   });
-
+  
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final type = FileUtils.getFileType(file['originalname']);
-
     ImageProvider getImageProvider(file) {
       if (type['type']=='image') {
         return NetworkImage(file);
@@ -25,7 +26,6 @@ class FileCard extends ConsumerWidget {
         return AssetImage('assets/images/${type['extension']}.png');
       }
     }
-
     return Card(
       color: Theme.of(context).colorScheme.surfaceContainer,
       child: Padding(
@@ -45,13 +45,40 @@ class FileCard extends ConsumerWidget {
               ),
             ),
             Spacer(),
-            SizedBox(
-              width: 160,
-              child: Text(
-                file['originalname'],
-                overflow: TextOverflow.ellipsis,
-                maxLines: 3,
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 160,
+                  child: Text(
+                    file['originalname'],
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                  ),
+                ),
+                SizedBox(height: 5,),
+                Row(
+                  children: [
+                    Text(
+                      FileSize.format(file['fileSize']),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                    SizedBox(width: 20),
+
+                    if((file['shareuser'] as List).isNotEmpty)
+                      FutureBuilder<Widget>(
+                        future: ShareFiles.getIcon(file['shareuser']),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) return const SizedBox();
+                          return snapshot.data!;
+                        },
+                      )
+                  ],
+                )
+              ],
             ),
             Spacer(),
             PopupMenuButton(

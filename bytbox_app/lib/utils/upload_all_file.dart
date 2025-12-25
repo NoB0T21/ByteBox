@@ -24,10 +24,9 @@ Future<void> uploadAllFiles(
         },
       );
 
-      // ✅ CORRECT Riverpod access
       ref
-          .read(dataNotifierProvider.notifier)
-          .addFileLocally(res);
+        .read(dataNotifierProvider.notifier)
+        .addFileLocally(res);
 
       file.success = true;
     } catch (e) {

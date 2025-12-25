@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
 class StorageSizeDisplay extends StatelessWidget {
-  const StorageSizeDisplay({super.key});
+  final String total;
+  const StorageSizeDisplay({
+    super.key,
+    required this.total
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,7 @@ class StorageSizeDisplay extends StatelessWidget {
           ),
           const SizedBox(height: 3,),
           Text(
-            '28.6 Mb / 500 Mb',
+            '$total / 500 Mb',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16
