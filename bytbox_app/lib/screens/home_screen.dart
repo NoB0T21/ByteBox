@@ -1,6 +1,4 @@
 import 'package:bytbox_app/backend_notifier/data_notifier.dart';
-import 'package:bytbox_app/components/recent_file_display.dart';
-import 'package:bytbox_app/components/storage_size_display.dart';
 import 'package:bytbox_app/screens/files_screen.dart';
 import 'package:bytbox_app/screens/login_screen.dart';
 import 'package:bytbox_app/screens/upload_screen.dart';
@@ -74,7 +72,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentPage,
         onTap: (value) {
-          print(value);
           setState(() {
             currentPage = value;
           });

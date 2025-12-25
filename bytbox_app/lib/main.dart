@@ -1,3 +1,4 @@
+import 'package:bytbox_app/components/auth_wrapper.dart';
 import 'package:bytbox_app/screens/home_screen.dart';
 import 'package:bytbox_app/screens/login_screen.dart';
 import 'package:bytbox_app/screens/register_screen.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
         RegisterScreen.routeName: (context) => const RegisterScreen(),
         HomeScreen.routeName: (context) => const HomeScreen()
       },
-      initialRoute: HomeScreen.routeName,
+      home: const AuthWrapper(),
     );
   }
 }

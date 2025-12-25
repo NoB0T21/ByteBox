@@ -22,7 +22,7 @@ class FileCard extends StatelessWidget {
     return Card(
       color: Theme.of(context).colorScheme.onSecondaryFixed,
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -38,7 +38,14 @@ class FileCard extends StatelessWidget {
               ),
             ),
             Spacer(),
-            Text(file['originalname']),
+            SizedBox(
+              width: 160,
+              child: Text(
+                file['originalname'],
+                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
+              ),
+            ),
             Spacer(),
             Icon(Icons.menu_rounded)
           ],

@@ -25,6 +25,11 @@ class BackendNotifier extends AsyncNotifier <Map<String, dynamic>?> {
         password, 
         file
       );
+      final accessToken = result['token'];
+      await storage.write(
+        key: 'token', 
+        value: accessToken
+      );
       return result;
     });
   }
@@ -40,9 +45,14 @@ class BackendNotifier extends AsyncNotifier <Map<String, dynamic>?> {
         password
       );
       final accessToken = result['token'];
+      final userid = result['user']['_id'];
       await storage.write(
         key: 'token', 
         value: accessToken
+      );
+      await storage.write(
+        key: 'id', 
+        value: userid
       );
       return result;
     });
