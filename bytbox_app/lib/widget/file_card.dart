@@ -15,8 +15,11 @@ class FileCard extends StatelessWidget {
     ImageProvider getImageProvider(file) {
       if (type['type']=='image') {
         return NetworkImage(file);
+      } else if (type['type']=='other'){
+        return AssetImage('assets/images/unknown.png');
+      }else{
+        return AssetImage('assets/images/${type['extension']}.png');
       }
-      return AssetImage('assets/images/${type['extension']}.png');
     }
 
     return Card(

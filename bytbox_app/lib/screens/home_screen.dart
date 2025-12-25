@@ -1,5 +1,6 @@
 import 'package:bytbox_app/backend_notifier/data_notifier.dart';
 import 'package:bytbox_app/screens/files_screen.dart';
+import 'package:bytbox_app/screens/files_type_screen.dart';
 import 'package:bytbox_app/screens/login_screen.dart';
 import 'package:bytbox_app/screens/upload_screen.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  int currentPage = 0;
+  int currentPage = 5;
   @override
   Widget build(BuildContext context) {
     final dataState = ref.watch(dataNotifierProvider);
@@ -35,7 +36,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           IconButton(
             onPressed: () async {
               setState(() {
-                currentPage = 0;
+                currentPage = 5;
               });
             }, 
             icon: Icon(Icons.home)
@@ -55,13 +56,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         error: (error, _) => Center(child: Text('Error: $error')),
         data: (data) {
           List<Widget> screens = [
+            FilesTypeScreen(data: data['file'], type: Type.images),
+            FilesTypeScreen(data: data['file'], type: Type.videos),
+            UploadScreen(),
+            FilesTypeScreen(data: data['file'], type: Type.documents),
+            FilesTypeScreen(data: data['file'], type: Type.others),
             data['file'].isEmpty
               ? const Center(child: Text('No files found'))
               : FilesScreen(data: data['file']),
-            UploadScreen()
           ];
           return Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(12.0),
             child: IndexedStack(
               index: currentPage,
               children: screens,
@@ -70,7 +75,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentPage,
+        iconSize: 30,
+        selectedFontSize: 0,
+        unselectedFontSize: 0,
+        currentIndex: currentPage > 2 ? 0 : currentPage,
         onTap: (value) {
           setState(() {
             currentPage = value;
@@ -78,11 +86,38 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(
+              Icons.image_outlined,
+              color: currentPage == 0 ? Theme.of(context).colorScheme.primary : Colors.grey,
+            ),
             label: ''
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline_rounded),
+            icon: Icon(
+              Icons.videocam_rounded,
+              color: currentPage == 1 ? Theme.of(context).colorScheme.primary : Colors.grey,
+            ),
+            label: ''
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add_circle_outline_rounded,
+              color: currentPage == 2 ? Theme.of(context).colorScheme.primary : Colors.grey,
+            ),
+            label: ''
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.folder,
+              color: currentPage == 3 ? Theme.of(context).colorScheme.primary : Colors.grey,
+            ),
+            label: ''
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.question_mark_rounded,
+              color: currentPage == 4 ? Theme.of(context).colorScheme.primary : Colors.grey,
+            ),
             label: ''
           ),
         ]

@@ -22,7 +22,13 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text('he;;;ppkdok'),
+        Text(
+          'Upload your Files',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18
+          ),
+        ),
         ElevatedButton(
           onPressed: () async {
             final result = await FilePicker.platform.pickFiles(
@@ -46,7 +52,19 @@ class _UploadScreenState extends ConsumerState<UploadScreen> {
               },
             );
           },
-          child: const Text('Pick Files'),
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color.fromRGBO(84, 17, 201, 1),
+            minimumSize: Size(100,40),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+            )
+          ),
+          child: const Text(
+            'Select Files',
+            style: TextStyle(
+              color: Colors.white
+            ),
+          ),
         ),
 
         Expanded(

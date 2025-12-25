@@ -16,9 +16,12 @@ class FileCard extends StatelessWidget {
 
     ImageProvider getImageProvider(file) {
       if (type['type']=='image') {
-        return FileImage(File(file.file.path));
+        return NetworkImage(file);
+      } else if (type['type']=='other'){
+        return AssetImage('assets/images/unknown.png');
+      }else{
+        return AssetImage('assets/images/${type['extension']}.png');
       }
-      return AssetImage('assets/images/${type['extension']}.png');
     }
 
     return Card(
@@ -27,27 +30,36 @@ class FileCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                shape: type['type']=='image' ? BoxShape.circle : BoxShape.rectangle,
-                image: DecorationImage(
-                  image: getImageProvider(file),
-                  fit: BoxFit.cover
-                )
-              ),
-            ),
-            Text(
-              basename(file.file.path),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            Row(
+              children: [
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    shape: type['type']=='image' ? BoxShape.circle : BoxShape.rectangle,
+                    image: DecorationImage(
+                      image: getImageProvider(file),
+                      fit: BoxFit.cover
+                    )
+                  ),
+                ),
+                SizedBox(width: 15,),
+                Expanded(
+                  child: Text(
+                    basename(file.file.path),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
             ),
 
-            const SizedBox(height: 8),
+            const SizedBox(height: 15),
 
             LinearProgressIndicator(
               value: file.uploading ? file.progress : 0,
+              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+              color: Color.fromRGBO(84, 17, 201, 1),
             ),
 
             const SizedBox(height: 6),
