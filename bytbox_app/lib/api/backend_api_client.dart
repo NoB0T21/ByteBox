@@ -90,7 +90,7 @@ class BackendApiClient {
     final token = await _storage.read(key: 'token');
 
     final response = await http.get(
-      Uri.parse('$url/file/getfile/ll'),
+      Uri.parse('$url/file/getfile'),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',
@@ -159,5 +159,24 @@ class BackendApiClient {
     final responseBody = await response.stream.bytesToString();
     final responseb= jsonDecode(responseBody);
     return responseb['newFile'];
+  }
+
+  Future<Map<String,dynamic>> deleteFiles(
+    String fileId
+  ) async {
+    final token = await _storage.read(key: 'token');
+
+    final response = await http.delete(
+      Uri.parse('$url/file/delete/$fileId'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      }
+    );
+    if(response.statusCode != 200){
+      throw Exception('Something went wrong');
+    }
+    final responseBody = jsonDecode(response.body);
+    return responseBody;
   }
 }

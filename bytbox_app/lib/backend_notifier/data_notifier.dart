@@ -27,6 +27,20 @@ class DataNotifier extends AsyncNotifier<Map<String,dynamic>>{
       state = AsyncData(data);
     }
   }
+
+  void removeFileLocally(String fileId) {
+    final current = state;
+
+    if (current is AsyncData<Map<String, dynamic>>) {
+      final data = Map<String, dynamic>.from(current.value);
+
+      final List files = List.from(data['file'] ?? []);
+      files.removeWhere((f) => f['_id'] == fileId);
+
+      data['file'] = files;
+      state = AsyncData(data);
+    }
+  }
 }
 
 final dataNotifierProvider = AsyncNotifierProvider<DataNotifier,Map<String,dynamic>>(DataNotifier.new);

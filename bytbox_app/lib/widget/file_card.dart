@@ -1,7 +1,11 @@
+import 'package:bytbox_app/utils/file_actions.dart';
 import 'package:bytbox_app/utils/file_type.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class FileCard extends StatelessWidget {
+enum Menus {delete, update}
+
+class FileCard extends ConsumerWidget {
   final Map file;
   const FileCard({
     super.key,
@@ -9,7 +13,7 @@ class FileCard extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final type = FileUtils.getFileType(file['originalname']);
 
     ImageProvider getImageProvider(file) {
@@ -23,7 +27,7 @@ class FileCard extends StatelessWidget {
     }
 
     return Card(
-      color: Theme.of(context).colorScheme.onSecondaryFixed,
+      color: Theme.of(context).colorScheme.surfaceContainer,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
         child: Row(
@@ -50,7 +54,36 @@ class FileCard extends StatelessWidget {
               ),
             ),
             Spacer(),
-            Icon(Icons.menu_rounded)
+            PopupMenuButton(
+              onSelected: (value) async {
+                if (value == Menus.delete) {
+                  showDeleteDialog(
+                    context: context,
+                    ref: ref,
+                    fileId: file['_id'],
+                  );
+                }
+
+                if (value == Menus.update) {
+                  // handle update
+                }
+              },
+              position: PopupMenuPosition.under,
+              padding: EdgeInsetsGeometry.all(8),
+              menuPadding: EdgeInsets.all(8),
+              itemBuilder: (context) {
+                return const [
+                  PopupMenuItem<Menus>(
+                    value: Menus.update,
+                    child: Text('Update')
+                  ),
+                  PopupMenuItem<Menus>(
+                    value: Menus.delete,
+                    child: Text('Delete')
+                  ),
+                ];
+              }
+            )
           ],
         ),
       ),

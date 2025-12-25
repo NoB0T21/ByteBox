@@ -26,22 +26,20 @@ class TypesFilesDisplay extends StatelessWidget {
       crossAxisCount = 4;
     }
 
-    return Expanded(
-      child: files.isEmpty
-        ? const Center(child: Text('No files found'))
-        :GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: crossAxisCount,
-          childAspectRatio: 3,
-          mainAxisSpacing: 16,
-          crossAxisSpacing: 16,
-        ),
-        itemCount: files.length,
-        itemBuilder: (_, index) {
-          final file = files[index];
-          return FileCard(file: file);
-        },
+    return files.isEmpty
+      ? const Center(child: Text('No files found'))
+      :GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
+        childAspectRatio: 3,
+        mainAxisSpacing: 16,
+        crossAxisSpacing: 16,
       ),
+      itemCount: files.length,
+      itemBuilder: (_, index) {
+        final file = files[index];
+        return FileCard(file: file);
+      },
     );
   }
 }

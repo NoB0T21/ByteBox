@@ -260,7 +260,6 @@ export const deletefile = async (request: Request, response: any) => {
         .remove([file.path]);
 
     if (error) {
-        console.log('hello',error);
         response.status(400).json({
             message: error,
             success: false,

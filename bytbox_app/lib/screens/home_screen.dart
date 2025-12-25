@@ -63,7 +63,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             FilesTypeScreen(data: data['file'], type: Type.others),
             data['file'].isEmpty
               ? const Center(child: Text('No files found'))
-              : FilesScreen(data: data['file']),
+              : FilesScreen(data: (data['file'] as List<dynamic>? ?? []).take(9).toList())
           ];
           return Padding(
             padding: const EdgeInsets.all(12.0),
