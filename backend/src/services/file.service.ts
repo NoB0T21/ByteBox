@@ -50,7 +50,7 @@ export const  getfilesll = async ({id}:{id: any}) => {
 
 export const  renamefiles = async ({id,originalname}:{id: string, originalname: string}) => {
  if(!id) return
- const file = await fileModel.findOneAndUpdate({_id: id},{originalname});
+ const file = await fileModel.findOneAndUpdate({_id: id},{originalname},{ new: true });
  return file
 }
 

@@ -21,3 +21,23 @@ Future<Map<String, dynamic>> deleteFile(
     throw Exception(e);
   }
 }
+
+Future<Map<String, dynamic>> updateFile(
+  WidgetRef ref,
+  String fileId,
+  String originalname,
+) async{
+  final api = BackendApiClient();
+
+  try {
+    final response = await api.updateUser(fileId,originalname);
+    if(response['success']){
+      ref
+        .read(dataNotifierProvider.notifier)
+        .renameFileLocally(fileId,response['file']['originalname']);
+    }
+    return response;
+  } catch (e) {
+    throw Exception(e);
+  }
+}

@@ -16,7 +16,6 @@ class FilesScreen extends StatelessWidget {
       0,
       (total, file) => total + (file['fileSize'] ?? 0),
     );
-    print(data[0]);
     final totalSize = FileSize.format(sum);
     return Center(
       child: Column(

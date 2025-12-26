@@ -92,7 +92,12 @@ class FileCard extends ConsumerWidget {
                 }
 
                 if (value == Menus.update) {
-                  // handle update
+                  showUpdateDialog(
+                    context: context, 
+                    ref: ref, 
+                    fileId: file['_id'],
+                    originalname: file['originalname']
+                  );
                 }
               },
               position: PopupMenuPosition.under,

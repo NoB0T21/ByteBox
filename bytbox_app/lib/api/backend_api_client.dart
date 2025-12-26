@@ -179,4 +179,27 @@ class BackendApiClient {
     final responseBody = jsonDecode(response.body);
     return responseBody;
   }
+
+  Future<Map<String,dynamic>> updateUser(
+    String fileId,
+    String originalname,
+  ) async {
+    print('$fileId,$originalname');
+    final token = await _storage.read(key: 'token');
+    final response = await http.post(
+      Uri.parse('$url/file/rename/$fileId'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'name': originalname,
+      }),
+    );
+    final responseBody = jsonDecode(response.body);
+    if(response.statusCode != 200){
+      throw Exception('Something went wrong');
+    }
+    return responseBody;
+  }
 }

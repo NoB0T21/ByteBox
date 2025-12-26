@@ -41,6 +41,26 @@ class DataNotifier extends AsyncNotifier<Map<String,dynamic>>{
       state = AsyncData(data);
     }
   }
+
+  void renameFileLocally(String fileId, String newName) {
+    final current = state;
+
+    if (current is AsyncData<Map<String, dynamic>>) {
+      final data = Map<String, dynamic>.from(current.value);
+
+      final List files = List.from(data['file'] ?? []);
+      final index = files.indexWhere((f) => f['_id'] == fileId);
+
+      if(index == -1) return;
+
+      final updatedFile = Map<String, dynamic>.from(files[index]);
+      updatedFile['originalname'] = newName;
+      files[index] = updatedFile;
+      
+      data['file'] = files;
+      state = AsyncData(data);
+    }
+  }
 }
 
 final dataNotifierProvider = AsyncNotifierProvider<DataNotifier,Map<String,dynamic>>(DataNotifier.new);

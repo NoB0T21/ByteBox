@@ -28,3 +28,23 @@ void showDeleteDialog({
     ),
   );
 }
+
+void showUpdateDialog({
+  required BuildContext context,
+  required WidgetRef ref,
+  required String fileId,
+  required String originalname,
+}) {
+  showDialog(
+    context: context,
+    builder: (_) => Dialogbox2(
+      title: 'Update file',
+      content: 'Change name to Rename the file ?',
+      cancel: 'Cancel',
+      conferm: 'Change',
+      ref: ref,
+      fileId: fileId,
+      originalname: originalname,
+    ),
+  );
+}
