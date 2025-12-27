@@ -6,7 +6,9 @@
 
 **ByteBox** is a powerful, modern, and responsive cloud storage web app built for seamless file management. From storing and sharing files of any type to exploring upload details and sorting intelligently — ByteBox does it all with style and simplicity.
 
-🔗 **Live Demo**: [https://bytebox-snowy.vercel.app/](https://bytebox-snowy.vercel.app/)
+🔗 **Live Demo**: [https://bytebox-snowy.vercel.app/](https://bytebox-snowy.vercel.app/)  
+**or**   
+📱 **Download APK**: [ByteBox app](./bytbox_app/build/app/outputs/flutter-apk/app-release.apk)
 
 ---
 
@@ -39,6 +41,7 @@
 
 ### **Backend**
 - [Node.js](https://nodejs.org/) with **TypeScript**
+- [Redis](https://redis.io/) for **Caching & Rate-Limiting**
 - REST API built for all core functionality
 
 ### **Storage**
@@ -91,6 +94,7 @@
      - `http://localhost:3000`
      - `http://localhost:3000/sign-up`
      - `http://localhost:3000/sign-in`
+    - for **Android**, add: SHA-1
 
 7. **Configure Backend `.env` File**
    - In the `backend` folder, create a `.env` file with the following:
@@ -99,9 +103,11 @@
      SECRET_KEY=your_secret_here
      MONGO_URL=your_mongodb_url/Next_Drive
      GOOGLE_ID=your_google_oauth_client_id
-     SUPABASE_KEY=your_supabase_key
+     SUPABASE_ANON_KEY=your_supabase_key
      SUPABASE_URL=your_supabase_url
      CLIENT_URL=http://localhost:3000
+     REDIS_URL=redis_url
+     SUPABASE_BUCKET=your_bucket_name
      ```
    - **Do NOT** share this file publicly.
 
@@ -115,16 +121,27 @@
    ```env
    NEXT_PUBLIC_BASE_URL=http://localhost:4000
    NEXT_PUBLIC_GOOGLE_ID=your_google_oauth_client_id
-✅ **Backend is now configured!**
+✅ **frontend is now configured!**
+
+### 🎯 Frontend Setup
+
+8. In the `bytebox_app` folder, create a `.env` file:
+   ```env
+    BACKEND_URL = http://localhost:4000
+✅ **bytebox_app is now configured!**
 
 ---
 ### ⚙️ Running the Project
 - Open a terminal in the `frontend` folder:
     ```terminal
     npm run dev
-- Open a terminal in the `frontend` folder:
+- Open a terminal in the `backend` folder:
     ```terminal
     npm start
+- to run Open a terminal in the `bytebox_app` folder:
+    ```terminal
+    flutter pub get
+    flutter run
 ✅ **🎉 Congrats!**
 
 Your ByteBox cloud storage app is now up and running locally!
