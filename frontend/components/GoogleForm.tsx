@@ -38,7 +38,7 @@ const GoogleForm = () => {
           form.append('password',responses.data.sub || '');
           form.append('picture', responses.data.picture || '');
         
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/user/signup`,form,{withCredentials: true})
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/user/web/signup`,form,{withCredentials: true})
       if(response.status !== 201 || 202){
         setResponseMsg(response.data.message)
         setShowToast(true)

@@ -17,7 +17,7 @@ interface User {
 
 export const register = async (request: Request, response: any) => {
     const file = request.file as Express.Multer.File;
-    const {name, email, password} = request.body
+    const {name, email, password, picture} = request.body
     if(!name||!email||!password){
         return response.status(400).json({
             message: 'Require all fields',
@@ -32,33 +32,47 @@ export const register = async (request: Request, response: any) => {
                 user: existingUsers,
                 success: false,
             })}
-
-        const files = file?.originalname.split(" ").join("");
-        const uniqueFilename = `${uuid4()}-${files}`;
-        const { data, error } = await supabase.storage
-            .from(process.env.SUPABASE_BUCKET || '')
-            .upload(uniqueFilename, file?.buffer, {
-                contentType: file?.mimetype,
-                cacheControl: "3600",
-                upsert: false,
-            });
-        if (error) {
-            response.status(500).json({
-                message: "Server error",
-                success: false,
-            });
-            return
+            
+            let publicUrlData;
+            let user;
+            
+        if(!picture){
+            const files = file?.originalname.split(" ").join("");
+            const uniqueFilename = `${uuid4()}-${files}`;
+            const { data, error } = await supabase.storage
+                .from(process.env.SUPABASE_BUCKET || '')
+                .upload(uniqueFilename, file?.buffer, {
+                    contentType: file?.mimetype,
+                    cacheControl: "3600",
+                    upsert: false,
+                });
+            if (error) {
+            console.log(uniqueFilename,process.env.SUPABASE_BUCKET) 
+                response.status(500).json({
+                    message: "Server error",
+                    success: false,
+                });
+                return
+            }
+            publicUrlData = await supabase.storage
+                .from(process.env.SUPABASE_BUCKET || '')
+                .getPublicUrl(`${uniqueFilename}`);
+            const hashPassword = await userModel.hashpassword(password)
+            user = await registerUser({
+                name,
+                email,
+                picture:publicUrlData?.data.publicUrl || "",
+                password:hashPassword})
+        }else{
+            const hashPassword = await userModel.hashpassword(password)
+            user = await registerUser({
+                name,
+                email,
+                picture:picture,
+                password:hashPassword})
         }
-        const publicUrlData = await supabase.storage
-            .from(process.env.SUPABASE_BUCKET || '')
-            .getPublicUrl(`${uniqueFilename}`);
+        
 
-        const hashPassword = await userModel.hashpassword(password)
-        const user = await registerUser({
-            name,
-            email,
-            picture:publicUrlData.data.publicUrl || "",
-            password:hashPassword})
         if(!user){
             return response.status(500).json({
                 message: "Some Error occure",

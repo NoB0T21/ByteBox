@@ -2,6 +2,7 @@ import 'package:bytbox_app/backend_notifier/backend_notifier.dart';
 import 'package:bytbox_app/screens/home_screen.dart';
 import 'package:bytbox_app/screens/register_screen.dart';
 import 'package:bytbox_app/utils/custom_snakebar.dart';
+import 'package:bytbox_app/utils/google_login.dart';
 import 'package:bytbox_app/widget/bottons.dart';
 import 'package:bytbox_app/widget/inputField.dart';
 import 'package:flutter/material.dart';
@@ -135,6 +136,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     width: 100,
                   ),
                 ],
+              ),
+              IconButton(
+                onPressed: (){
+                  ref.read(backendNotifierProvider.notifier).googleLoginUser();
+                  signInWithGoogle();
+                }, 
+                icon: Icon(Icons.g_mobiledata_rounded)
               )
             ],
           ),

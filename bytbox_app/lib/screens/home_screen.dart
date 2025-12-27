@@ -75,7 +75,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        iconSize: 30,
+        iconSize: 27,
         selectedFontSize: 0,
         unselectedFontSize: 0,
         currentIndex: currentPage > 2 ? 0 : currentPage,

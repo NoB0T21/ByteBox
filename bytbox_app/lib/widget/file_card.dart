@@ -1,88 +1,114 @@
+import 'package:bytbox_app/api/backend_api_client.dart';
+import 'package:bytbox_app/utils/custom_snakebar.dart';
 import 'package:bytbox_app/utils/file_actions.dart';
 import 'package:bytbox_app/utils/file_size.dart';
 import 'package:bytbox_app/utils/file_type.dart';
-import 'package:bytbox_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-enum Menus {delete, update}
+enum Menus { delete, update, download }
 
-class FileCard extends ConsumerWidget {
+class FileCard extends ConsumerStatefulWidget {
   final Map file;
+
   const FileCard({
     super.key,
-    required this.file
+    required this.file,
   });
-  
+
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<FileCard> createState() => _FileCardState();
+}
+
+class _FileCardState extends ConsumerState<FileCard> {
+  double progress = 0;
+  bool isDownloading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final file = widget.file;
     final type = FileUtils.getFileType(file['originalname']);
-    ImageProvider getImageProvider(file) {
-      if (type['type']=='image') {
-        return NetworkImage(file);
-      } else if (type['type']=='other'){
-        return AssetImage('assets/images/unknown.png');
-      }else{
+
+    ImageProvider getImageProvider(String url) {
+      if (type['type'] == 'image') {
+        return NetworkImage(url);
+      } else if (type['type'] == 'other') {
+        return const AssetImage('assets/images/unknown.png');
+      } else {
         return AssetImage('assets/images/${type['extension']}.png');
       }
     }
+
     return Card(
       color: Theme.of(context).colorScheme.surfaceContainer,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               width: 60,
               height: 60,
               decoration: BoxDecoration(
-                shape: type['type']=='image' ? BoxShape.circle : BoxShape.rectangle,
+                shape: type['type'] == 'image'
+                    ? BoxShape.circle
+                    : BoxShape.rectangle,
                 image: DecorationImage(
                   image: getImageProvider(file['imageURL']),
-                  fit: BoxFit.cover
-                )
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-            Spacer(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 160,
-                  child: Text(
-                    file['originalname'],
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                  ),
-                ),
-                SizedBox(height: 5,),
-                Row(
-                  children: [
-                    Text(
-                      FileSize.format(file['fileSize']),
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold
-                      ),
-                    ),
-                    SizedBox(width: 20),
 
-                    if((file['shareuser'] as List).isNotEmpty)
-                      FutureBuilder<Widget>(
-                        future: ShareFiles.getIcon(file['shareuser']),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) return const SizedBox();
-                          return snapshot.data!;
-                        },
-                      )
+            const SizedBox(width: 12),
+
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    file['originalname'],
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+
+                  Text(
+                    FileSize.format(file['fileSize']),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+
+                  if (isDownloading) ...[
+                    const SizedBox(height: 6),
+                    LinearProgressIndicator(value: progress)
                   ],
-                )
-              ],
+                ],
+              ),
             ),
-            Spacer(),
-            PopupMenuButton(
+
+            PopupMenuButton<Menus>(
               onSelected: (value) async {
+                if (value == Menus.download) {
+                  setState(() {
+                    isDownloading = true;
+                    progress = 0;
+                  });
+
+                  await BackendApiClient().downloadFile(
+                    url: file['imageURL'],
+                    fileName: file['originalname'],
+                    onProgress: (p) {
+                      if (mounted) {
+                        setState(() => progress = p);
+                      }
+                    },
+                  );
+
+                  if (mounted) {
+                    setState(() => isDownloading = false);
+                  }
+                    CustomSnakebar.show(context, 'Download completed', Type.success);
+                }
+
                 if (value == Menus.delete) {
                   showDeleteDialog(
                     context: context,
@@ -93,29 +119,28 @@ class FileCard extends ConsumerWidget {
 
                 if (value == Menus.update) {
                   showUpdateDialog(
-                    context: context, 
-                    ref: ref, 
+                    context: context,
+                    ref: ref,
                     fileId: file['_id'],
-                    originalname: file['originalname']
+                    originalname: file['originalname'],
                   );
                 }
               },
-              position: PopupMenuPosition.under,
-              padding: EdgeInsetsGeometry.all(8),
-              menuPadding: EdgeInsets.all(8),
-              itemBuilder: (context) {
-                return const [
-                  PopupMenuItem<Menus>(
-                    value: Menus.update,
-                    child: Text('Update')
-                  ),
-                  PopupMenuItem<Menus>(
-                    value: Menus.delete,
-                    child: Text('Delete')
-                  ),
-                ];
-              }
-            )
+              itemBuilder: (_) => const [
+                PopupMenuItem(
+                  value: Menus.download,
+                  child: Text('Download'),
+                ),
+                PopupMenuItem(
+                  value: Menus.update,
+                  child: Text('Update'),
+                ),
+                PopupMenuItem(
+                  value: Menus.delete,
+                  child: Text('Delete'),
+                ),
+              ],
+            ),
           ],
         ),
       ),

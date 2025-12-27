@@ -6,10 +6,13 @@ import 'package:bytbox_app/theme/main_app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:media_store_plus/media_store_plus.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+  await MediaStore.ensureInitialized();
+  MediaStore.appFolder = 'BytBox';
   runApp(
     const ProviderScope(
       child: MyApp(),
