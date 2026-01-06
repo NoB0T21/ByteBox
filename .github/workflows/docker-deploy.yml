@@ -30,7 +30,7 @@ jobs:
         run: |
           docker push nob0t/my-bytebox-backend:latest
 
-      - name: Trigger Render Deploy
+      - name: Render Deploy
         uses: fjogeleit/http-request-action@v1
         with:
           url: https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}
