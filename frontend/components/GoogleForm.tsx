@@ -24,14 +24,6 @@ const GoogleForm = () => {
             Authorization: `Bearer ${res.access_token}`,
           }
         })
-        if(responses.status === 200){
-          Cookies.set("token", res.access_token, {
-            expires: 1, // days
-            sameSite: "strict",
-            secure: true
-          });
-          
-        }
         const form = new FormData();
           form.append('name', responses.data.name || '');
           form.append('email', responses.data.email || '');
@@ -52,6 +44,14 @@ const GoogleForm = () => {
             email: raw.email,
             picture: raw.picture
             }
+        if(responses.status === 200){
+          Cookies.set("token", res.access_token, {
+            expires: 1, // days
+            sameSite: "strict",
+            secure: true
+          });
+          
+        }
         localStorage.setItem('user', JSON.stringify(user));
         Cookies.set('user', user._id, { expires: 1 });
         router.push('/')

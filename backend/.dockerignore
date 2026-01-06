@@ -1,0 +1,18 @@
+# Env files
+.env
+.env.*
+
+# Node modules (we install inside container)
+node_modules
+
+# Git
+.git
+.gitignore
+
+# Docker files (optional but clean)
+Dockerfile
+docker-compose.yml
+
+# Build cache (if any)
+dist
+build
