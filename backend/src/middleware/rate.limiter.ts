@@ -3,7 +3,6 @@ import redis from '../Db/redis';
 import database from '../Db/mongodb';
 
 export function RateLimiter(seconds:number,Requests:number){
-  database();
   return async function  rateLimiter(req: Request, res: Response, next: NextFunction){
     const ip = req.ip || req.socket.remoteAddress;
     if(!ip){

@@ -11,12 +11,12 @@ const AvailableStorage = ({percentage,size}:{percentage:string,size:string}) => 
 
           <div className="top-1/2 absolute p-1 text-center -translate-x-1/2 -translate-y-1/2 start-1/2 transform">
             <span className="font-bold text-3xl">{percentage}%</span>
-            <span className="block text-2xl">Space used</span>
+            <span className="block text-2xl">space used</span>
           </div>
         </div>
         <div className='flex flex-col justify-center items-center w-full lg:w-2/3 h-full'>
             <p className='font-semibold text-xl md:text-3xl lg:text-4xl'>Available Storage</p>
-            <p className='font-semibold text-xl lg:text-2xl'>{size} / 500MB</p>
+            <p className='font-semibold text-xl lg:text-2xl'>{size} / 500Mb</p>
         </div>
     </div>
   )
