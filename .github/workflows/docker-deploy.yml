@@ -35,7 +35,7 @@ jobs:
         with:
           url: https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}
           method: POST
-          headers: |
+          customHeaders: |
             Authorization: Bearer ${{ secrets.RENDER_API_KEY }}
             Content-Type: application/json
-          body: '{"clearCache":true}'
+          data: '{"clearCache":true}'
