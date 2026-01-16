@@ -47,14 +47,11 @@ class BackendApiClient {
     final responseBody = await response.stream.bytesToString();
     final body = jsonDecode(responseBody);
     if(response.statusCode != 200 && response.statusCode!=201){
-      if(profilurl != null && response.statusCode==202 || gg == true){
+      if(gg == true){
         return jsonDecode(responseBody);
       }
       if(response.statusCode==202){
-        if(gg == true){
-          return jsonDecode(responseBody);
-        }
-        throw Exception('users already exist2222');
+        throw Exception('users already exist');
       }
       throw Exception(body['message'] ?? 'Something went wron222g');
     }
