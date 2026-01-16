@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use('/user',userRoutes)
 app.use('/file',fileRoutes)
 
-app.get('/','0.0.0.0',(req,res)=>{
+app.get('/',(req,res)=>{
     res.send(`working on ${process.env.PORT}`)
 });
 app.get('/api/keep-warm',(req,res)=>{
