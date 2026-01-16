@@ -67,7 +67,8 @@ class BackendNotifier extends AsyncNotifier <Map<String, dynamic>?> {
         name: user['name'], 
         email:  user['email'], 
         password:  user['password'], 
-        profilurl:  user['picture']
+        profilurl:  user['picture'],
+        gg: true
       );
       result['success']=true;
       final userid = result['user']['_id'];

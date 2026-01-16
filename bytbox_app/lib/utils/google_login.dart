@@ -7,7 +7,6 @@ final GoogleSignIn _googleSignIn = GoogleSignIn(
 Future<Map<String,dynamic>> signInWithGoogle() async {
   final user = await _googleSignIn.signIn();
   final auth = await user!.authentication;
-
   final idToken = auth.accessToken;
   return {
     'name': user.displayName,

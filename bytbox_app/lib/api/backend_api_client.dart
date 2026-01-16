@@ -11,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 
 class BackendApiClient {
   final String url = dotenv.env['BACKEND_URL']!;
+  
   final _storage = FlutterSecureStorage();
 
   Future<Map<String,dynamic>> registerUser({
@@ -19,6 +20,7 @@ class BackendApiClient {
     required String password,
     File? file,
     String? profilurl,
+    bool? gg,
   }) async {
     final uri = Uri.parse('$url/user/signup');
     final request = http.MultipartRequest('POST', uri);
@@ -45,13 +47,16 @@ class BackendApiClient {
     final responseBody = await response.stream.bytesToString();
     final body = jsonDecode(responseBody);
     if(response.statusCode != 200 && response.statusCode!=201){
-      if(profilurl != null && response.statusCode==202){
+      if(profilurl != null && response.statusCode==202 || gg == true){
         return jsonDecode(responseBody);
       }
       if(response.statusCode==202){
-        throw Exception('users already exist');
+        if(gg == true){
+          return jsonDecode(responseBody);
+        }
+        throw Exception('users already exist2222');
       }
-      throw Exception(body['message'] ?? 'Something went wrong');
+      throw Exception(body['message'] ?? 'Something went wron222g');
     }
     return jsonDecode(responseBody);
   }
@@ -70,6 +75,7 @@ class BackendApiClient {
         'password': password,
       }),
     );
+    print(email);
     final responseBody = jsonDecode(response.body);
     if(response.statusCode != 200 && response.statusCode!=201){
       if(response.statusCode==202){
@@ -77,6 +83,8 @@ class BackendApiClient {
       }
       throw Exception('Something went wrong');
     }
+    print('Something went wrong');
+    print(responseBody);
     return responseBody;
   }
   
