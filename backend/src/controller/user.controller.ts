@@ -27,7 +27,6 @@ export const register = async (request: Request, response: any) => {
     try {
         const existingUsers = await findUser({email})
         if(existingUsers){
-            console.log(existingUsers);
             return response.status(202).json({
                 message: "email already exists, Please Sign-in",
                 user: existingUsers,
