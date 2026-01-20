@@ -42,10 +42,10 @@ class BackendApiClient {
     }else{
       request.fields['picture'] = profilurl;
     }
-
     final response = await request.send();
     final responseBody = await response.stream.bytesToString();
     final body = jsonDecode(responseBody);
+    print(responseBody);
     if(response.statusCode != 200 && response.statusCode!=201){
       if(gg == true){
         return jsonDecode(responseBody);
@@ -72,7 +72,6 @@ class BackendApiClient {
         'password': password,
       }),
     );
-    print(email);
     final responseBody = jsonDecode(response.body);
     if(response.statusCode != 200 && response.statusCode!=201){
       if(response.statusCode==202){
@@ -80,8 +79,6 @@ class BackendApiClient {
       }
       throw Exception('Something went wrong');
     }
-    print('Something went wrong');
-    print(responseBody);
     return responseBody;
   }
   

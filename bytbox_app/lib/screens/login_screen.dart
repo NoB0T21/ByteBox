@@ -39,6 +39,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     ref.listen(backendNotifierProvider, (prev, next){
       next.whenOrNull(
         error: (error, _) {
+          print(error);
           final message = error is Exception
             ? error.toString().replaceFirst('Exception: ', '')
             : 'Something went wrong';
@@ -140,7 +141,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               IconButton(
                 onPressed: (){
                   ref.read(backendNotifierProvider.notifier).googleLoginUser();
-                  signInWithGoogle();
                 }, 
                 icon: Icon(Icons.g_mobiledata_rounded)
               )

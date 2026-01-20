@@ -62,6 +62,7 @@ class BackendNotifier extends AsyncNotifier <Map<String, dynamic>?> {
   Future<void> googleLoginUser() async {
     final api = ref.read(backendApiProvider);
     final user = await signInWithGoogle();
+    print(user);
     state = await AsyncValue.guard(() async {
       final result = await api.registerUser(
         name: user['name'], 
