@@ -5,6 +5,7 @@ import userModel  from '../Models/user.model'
 import jwt from 'jsonwebtoken'
 import uuid4 from "uuid4"
 import supabase from "../Db/supabase"
+import redis from "../Db/redis";
 
 const client = new OAuth2Client(process.env.GOOGLE_ID)
 
@@ -27,6 +28,13 @@ export const register = async (request: Request, response: any) => {
     try {
         const existingUsers = await findUser({email})
         if(existingUsers){
+            const job = {
+                type: "sendEmail",
+                to: email,
+                subject: 'Wellcome back',
+            };
+            console.log('job added')
+            await redis.lpush("jobs", JSON.stringify(job))
             return response.status(202).json({
                 message: "email already exists, Please Sign-in",
                 user: existingUsers,
@@ -95,7 +103,6 @@ export const register = async (request: Request, response: any) => {
 }
 
 export const login = async (request: Request, response:any) => {
-    console.log(request.body)
     const {email, password} = request.body
     if(!email||!password){
         return response.status(400).json({
@@ -118,6 +125,12 @@ export const login = async (request: Request, response:any) => {
                 success: false,
         })}
         const token = await user.generateToken()
+        const job = {
+            type: "sendEmail",
+            to: email,
+            subject: 'Wellcome back',
+        };
+        await redis.lpush("jobs", JSON.stringify(job));
         return response.status(201).json({
             message: "User login successfully",
             user,

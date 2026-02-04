@@ -7,7 +7,9 @@
     "test": "jest",
     "client": " npm run dev --prefix ../frontend",
     "start": "node ./dist/server.js",
+    "worker": "node ./dist/worker.js",
     "dev": "nodemon",
+    "start2": "concurrently \" npm start \" \" npm run worker \"",
     "build": "tsc"
   },
   "author": "Aryan Gawade (NoB0T)",
@@ -23,6 +25,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^1.4.13",
     "@types/node": "^24.0.3",
+    "@types/nodemailer": "^7.0.9",
     "@types/uuid4": "^2.0.3",
     "concurrently": "^9.1.2",
     "dotenv-cli": "^8.0.0",
@@ -47,6 +50,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.16.0",
     "multer": "^2.0.1",
+    "nodemailer": "^8.0.0",
     "uuid4": "^2.0.3",
     "ws": "^8.18.2"
   }
