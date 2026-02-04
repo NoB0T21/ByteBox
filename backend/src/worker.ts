@@ -40,8 +40,6 @@ async function startWorker() {
 
 async function processJob(job: any) {
     console.log("Processing:", job);
-    console.log(process.env.EMAIL_PASS)
-    console.log(process.env.EMAIL_USER)
     try {
         console.log("Sending email...");
 
