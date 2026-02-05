@@ -9,7 +9,7 @@ const redis = new Redis(process.env.REDIS_URL||'');
 async function sendEmail(to: string) {
   await sgMail.send({
     to,
-    from: process.env.EMAIL_USER!,
+    from: process.env.EMAIL_USER!, // verified sender
     subject: "Welcome back",
     text: "Hello Aryan 👋",
   });
