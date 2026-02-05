@@ -1,23 +1,15 @@
 import Redis from "ioredis";
-import nodemailer from "nodemailer";
+import sgMail from "@sendgrid/mail";
 import dotenv from "dotenv"
 dotenv.config();
 
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-    },
-});
+sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
 const redis = new Redis(process.env.REDIS_URL||'');
 
 async function sendEmail(to: string) {
-  await transporter.sendMail({
-    from: process.env.EMAIL_USER,
+  await sgMail.send({
     to,
+    from: process.env.EMAIL_USER!,
     subject: "Welcome back",
     text: "Hello Aryan 👋",
   });
