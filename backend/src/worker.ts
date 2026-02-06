@@ -24,10 +24,10 @@ async function processJob(job: any) {
     const jobs = {
       to: job.to,
       subject: job.subject,
-      text: job.text
+      html: job.html
     }
     try {
-        console.log("Sending email...");
+        console.log("Sending email...",jobs);
 
         await fetch((`${process.env.EMAIL_SENDER_URL}/send`||''), {
           method: 'POST',

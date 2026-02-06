@@ -15,13 +15,13 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-async function sendEmail(to: string, subject: string, text: string) {
+async function sendEmail(to: string, subject: string, html: string) {
   try {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to,
       subject,
-      text,
+      html,
     });
     return 1
   } catch (error) {
@@ -31,12 +31,12 @@ async function sendEmail(to: string, subject: string, text: string) {
 }
 
 app.post('/send', async function(req:Request, res:Response){
-    const {to, text, subject} = req.body
-    if(!to || !text || !subject) return res.status(400).json({
+    const {to, subject, html} = req.body
+    if(!to || !subject || !html) return res.status(400).json({
       message: "not sent",
       success: false
     })
-    const response = await sendEmail(to,text,subject)
+    const response = await sendEmail(to,subject,html)
     if(response===0) return res.status(403).json({
       message: "not sent",
       success: false

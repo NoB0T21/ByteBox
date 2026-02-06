@@ -32,27 +32,49 @@ export const register = async (request: Request, response: any) => {
                 type: "sendEmail",
                 to: email,
                 subject: `👋 Welcome Back ${existingUsers.name}`,
-                text:`Hi there 👋
+                html:`<table cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;margin:auto;font-family:Arial,sans-serif:padding:40px;">
 
-${existingUsers.name} Welcome back to ByteBox! ☁️
-We missed you 😊
-
-Your secure cloud space is still here, ready and waiting for you. Jump back in to access, upload, and share your files anytime, anywhere.
-
-✨ Here’s what you can do right now:
-📂 View your saved files
-⬆️ Upload new documents, photos, or videos
-🔗 Share files with secure links
-🔐 Enjoy fast & safe storage
-
-🚀 Continue where you left off:
-👉 Log in to your ByteBox account
-
-If you need any help or have questions, just reply to this email — we’re always happy to assist 💬
-
-Glad to have you back!
-Team ByteBox
-Secure • Fast • Simple ☁️`
+  <tr>
+     <td style="vertical-align:middle;padding:0 6px 0 0;width:60px;">
+      <img src="https://res.cloudinary.com/deweuhoti/image/upload/v1770377099/Logo_y1ovdx.png"
+           alt="ByteBox Logo"
+           width="60"
+           style="display:block;">
+    </td>
+    <td style="vertical-align:middle;padding:0;">
+      <h1 style="margin:0;font-size:22px;font-weight:700;line-height:1.2;">
+        ByteBox ☁️
+      </h1>
+    </td>
+  </tr>
+</table>
+<h2>Welcome back ${name} 👋</h2>
+    <p>We’re glad to see you again ☁️</p>
+    <p>
+        Your files are safe and right where you left them.<br>
+        Jump back in to upload, organize, and share anytime 🚀
+    </p>
+    <p><strong>✨ What you can do now:</strong></p>
+    <p>
+        • Access your saved files instantly 📂<br>
+        • Upload new photos, videos, or documents ⬆️<br>
+        • Share securely with anyone 🔐<br>
+        • Enjoy fast and smooth cloud storage
+    </p>
+    <p style="margin:24px 0;">
+        <a href="https://bytebox.app" 
+            style="display:inline-block;padding:12px 22px;background:#4F46E5;color:#ffffff;text-decoration:none;border-radius:8px;font-weight:600;">
+            Open ByteBox
+        </a>
+    </p>
+    <p>
+        Need help? Just reply to this email — we’re here for you 😊
+    </p>
+    <p>
+        <strong>— Team ByteBox</strong><br>
+        Secure • Fast • Simple ☁️
+    </p>
+`
             };
             await redis.lpush("jobs", JSON.stringify(job))
             return response.status(202).json({
@@ -110,30 +132,48 @@ Secure • Fast • Simple ☁️`
             type: "sendEmail",
             to: email,
             subject: '🎉 Your ByteBox is Ready!',
-            text:`Hi there 👋
+            html:`<table align="center" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;margin:auto;font-family:Arial,sans-serif:padding:40px;">
 
-Welcome to ByteBox – your personal space in the cloud ☁️
-
-We’re excited to have you onboard! 🎉
-Your account is now ready, and you can start uploading, organizing, and sharing files securely anytime, anywhere.
-
-🗂️ What you can do with ByteBox:
-• Upload photos, videos, documents & more
-• Access files from any device 📱💻
-• Share files instantly with secure links 🔐
-• Fast, smooth & safe storage experience
-
-✨ Get started now:
-👉 Log in and upload your first file
-
-If you ever need help, just reply to this email — we’re always happy to support you 😊
-
-Thanks for choosing ByteBox
-Let’s store smarter, together 🚀
-
-Best regards,
-Team ByteBox
-☁️ Secure • Fast • Simple`
+  <tr>
+     <td style="vertical-align:middle;padding:0 6px 0 0;width:60px;">
+      <img src="https://res.cloudinary.com/deweuhoti/image/upload/v1770377099/Logo_y1ovdx.png"
+           alt="ByteBox Logo"
+           width="60"
+           style="display:block;">
+    </td>
+    <td style="vertical-align:middle;padding:0;">
+      <h1 style="margin:0;font-size:22px;font-weight:700;line-height:1.2;">
+        ByteBox ☁️
+      </h1>
+    </td>
+  </tr>
+</table>
+<h2>Welcome to ByteBox ${name} 👋</h2>
+    <p>Your personal cloud space is ready ☁️</p>
+    <p>
+        Start uploading, organizing, and sharing your files securely — anytime, anywhere 🚀
+    </p>
+    <p><strong>🗂️ What you can do with ByteBox:</strong></p>
+    <p>
+        • Upload photos, videos, and documents<br>
+        • Access your files from any device 📱💻<br>
+        • Share instantly with secure links 🔐<br>
+        • Enjoy a fast, smooth, and safe experience
+    </p>
+    <p style="margin:24px 0;">
+        <a href="https://bytebox.app"
+            style="display:inline-block;padding:12px 22px;background:#4F46E5;color:#ffffff;text-decoration:none;border-radius:8px;font-weight:600;">
+            Get Started
+        </a>
+    </p>
+    <p>
+        Need help? Just reply to this email — we’re happy to assist 😊
+    </p>
+    <p>
+        <strong>— Team ByteBox</strong><br>
+        Secure • Fast • Simple ☁️
+    </p>
+`
             };
         await redis.lpush("jobs", JSON.stringify(job))
         return response.status(201).json({
