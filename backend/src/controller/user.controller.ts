@@ -31,9 +31,29 @@ export const register = async (request: Request, response: any) => {
             const job = {
                 type: "sendEmail",
                 to: email,
-                subject: 'Wellcome back',
+                subject: `👋 Welcome Back ${existingUsers.name}`,
+                text:`Hi there 👋
+
+${existingUsers.name} Welcome back to ByteBox! ☁️
+We missed you 😊
+
+Your secure cloud space is still here, ready and waiting for you. Jump back in to access, upload, and share your files anytime, anywhere.
+
+✨ Here’s what you can do right now:
+📂 View your saved files
+⬆️ Upload new documents, photos, or videos
+🔗 Share files with secure links
+🔐 Enjoy fast & safe storage
+
+🚀 Continue where you left off:
+👉 Log in to your ByteBox account
+
+If you need any help or have questions, just reply to this email — we’re always happy to assist 💬
+
+Glad to have you back!
+Team ByteBox
+Secure • Fast • Simple ☁️`
             };
-            console.log('job added')
             await redis.lpush("jobs", JSON.stringify(job))
             return response.status(202).json({
                 message: "email already exists, Please Sign-in",
@@ -55,7 +75,6 @@ export const register = async (request: Request, response: any) => {
                     upsert: false,
                 });
             if (error) {
-            console.log(uniqueFilename,process.env.SUPABASE_BUCKET) 
                 response.status(500).json({
                     message: "Server error",
                     success: false,
@@ -87,6 +106,36 @@ export const register = async (request: Request, response: any) => {
                 success: false,
         })}
         const token = await user.generateToken()
+        const job = {
+            type: "sendEmail",
+            to: email,
+            subject: '🎉 Your ByteBox is Ready!',
+            text:`Hi there 👋
+
+Welcome to ByteBox – your personal space in the cloud ☁️
+
+We’re excited to have you onboard! 🎉
+Your account is now ready, and you can start uploading, organizing, and sharing files securely anytime, anywhere.
+
+🗂️ What you can do with ByteBox:
+• Upload photos, videos, documents & more
+• Access files from any device 📱💻
+• Share files instantly with secure links 🔐
+• Fast, smooth & safe storage experience
+
+✨ Get started now:
+👉 Log in and upload your first file
+
+If you ever need help, just reply to this email — we’re always happy to support you 😊
+
+Thanks for choosing ByteBox
+Let’s store smarter, together 🚀
+
+Best regards,
+Team ByteBox
+☁️ Secure • Fast • Simple`
+            };
+        await redis.lpush("jobs", JSON.stringify(job))
         return response.status(201).json({
             message: "User created successfully",
             user,

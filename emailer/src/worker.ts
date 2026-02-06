@@ -15,13 +15,13 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-async function sendEmail(to: string) {
+async function sendEmail(to: string, subject: string, text: string) {
   try {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to,
-      subject: "Test",
-      text: "Hello! 👋🏻",
+      subject,
+      text,
     });
     return 1
   } catch (error) {
@@ -31,13 +31,12 @@ async function sendEmail(to: string) {
 }
 
 app.post('/send', async function(req:Request, res:Response){
-  console.log(req.body)
-    const {to} = req.body
-    if(!to) return res.status(400).json({
+    const {to, text, subject} = req.body
+    if(!to || !text || !subject) return res.status(400).json({
       message: "not sent",
       success: false
     })
-    const response = await sendEmail(to)
+    const response = await sendEmail(to,text,subject)
     if(response===0) return res.status(403).json({
       message: "not sent",
       success: false
@@ -47,7 +46,7 @@ app.post('/send', async function(req:Request, res:Response){
       success: true
     })
 })
-app.get('/api/keep-warm',(req,res)=>{
+app.get('/',(req:Request, res:Response)=>{
     res.status(200).json({ warm: true });
 });
 

@@ -22,7 +22,9 @@ async function startWorker() {
 async function processJob(job: any) {
     console.log("Processing:", job);
     const jobs = {
-      to: job.to
+      to: job.to,
+      subject: job.subject,
+      text: job.text
     }
     try {
         console.log("Sending email...");
