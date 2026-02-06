@@ -21,15 +21,18 @@ async function startWorker() {
 
 async function processJob(job: any) {
     console.log("Processing:", job);
+    const jobs = {
+      to: job.to
+    }
     try {
         console.log("Sending email...");
 
-        await fetch((process.env.EMAIL_SENDER_URL||''), {
+        await fetch((`${process.env.EMAIL_SENDER_URL}/send`||''), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(job.to)
+          body: JSON.stringify(jobs)
         });
 
         console.log("Email sent successfully!");
