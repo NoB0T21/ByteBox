@@ -1,0 +1,33 @@
+{
+  "name": "emailer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "worker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon",
+    "start": "node ./dist/worker.js",
+    "build": "tsc"
+  },
+  "author": "Aryan Gawade (NoB0T)",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "@tsconfig/node22": "^22.0.2",
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.0.3",
+    "@types/nodemailer": "^7.0.9",
+    "dotenv-cli": "^8.0.0",
+    "eslint": "^9.29.0",
+    "globals": "^16.2.0",
+    "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.34.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.2.1",
+    "nodemailer": "^8.0.0"
+  }
+}

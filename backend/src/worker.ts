@@ -1,19 +1,8 @@
 import Redis from "ioredis";
-import sgMail from "@sendgrid/mail";
 import dotenv from "dotenv"
 dotenv.config();
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY!);
 const redis = new Redis(process.env.REDIS_URL||'');
-
-async function sendEmail(to: string) {
-  await sgMail.send({
-    to,
-    from: process.env.EMAIL_USER!, // verified sender
-    subject: "Welcome back",
-    text: "Hello Aryan 👋",
-  });
-}
 
 async function startWorker() {
   console.log("Worker started...");
@@ -35,7 +24,13 @@ async function processJob(job: any) {
     try {
         console.log("Sending email...");
 
-        await sendEmail(job.to);
+        await fetch(process.env.EMAIL_SENDER_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(job.to)
+        });
 
         console.log("Email sent successfully!");
     } catch (err) {
