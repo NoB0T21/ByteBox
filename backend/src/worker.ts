@@ -27,7 +27,7 @@ async function processJob(job: any) {
       html: job.html
     }
     try {
-        console.log("Sending email...",jobs);
+        console.log("Sending email...");
 
         await fetch((`${process.env.EMAIL_SENDER_URL}/send`||''), {
           method: 'POST',
