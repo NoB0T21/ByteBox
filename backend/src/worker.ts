@@ -20,7 +20,7 @@ async function startWorker() {
 }
 
 async function processJob(job: any) {
-    console.log("Processing:", job);
+    console.log("Processing...");
     const jobs = {
       to: job.to,
       subject: job.subject,
