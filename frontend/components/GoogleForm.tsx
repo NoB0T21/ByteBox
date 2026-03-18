@@ -29,6 +29,7 @@ const GoogleForm = () => {
           form.append('email', responses.data.email || '');
           form.append('password',responses.data.sub || '');
           form.append('picture', responses.data.picture || '');
+          form.append('type','google')
         
         const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/user/web/signup`,form,{withCredentials: true})
       if(response.status !== 201 || 202){
