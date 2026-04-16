@@ -70,6 +70,7 @@ class BackendNotifier extends AsyncNotifier <Map<String, dynamic>?> {
         profilurl:  user['picture'],
         gg: true
       );
+      print('Google user: $result');
       result['success']=true;
       final userid = result['user']['_id'];
       await storage.write(

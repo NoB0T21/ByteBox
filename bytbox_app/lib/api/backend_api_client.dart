@@ -29,6 +29,7 @@ class BackendApiClient {
     request.fields['name'] = name;
     request.fields['email'] = email;
     request.fields['password'] = password;
+    request.fields['type'] = gg == true ? 'google' : 'normal';
 
     if(profilurl == null){
       if(file != null){
